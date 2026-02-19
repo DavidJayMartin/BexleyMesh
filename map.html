@@ -8,11 +8,8 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
     
-    <!-- Heatmap.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.5/heatmap.min.js"></script>
-    
-    <!-- Leaflet Heatmap Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-heatmap/1.0.0/leaflet-heatmap.min.js"></script>
+    <!-- Leaflet Heat Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
     
     <style>
         * {
@@ -180,15 +177,8 @@
                 const response = await fetch('./testing/20260218.json');
                 const data = await response.json();
                 
-                // Transform data for heatmap
-                const heatmapData = data.map(point => ({
-                    lat: parseFloat(point.latitude),
-                    lng: parseFloat(point.Longitude),
-                    value: point.snr
-                }));
-                
-                // Normalize SNR values to 0-1 scale for heatmap intensity
-                const snrValues = heatmapData.map(p => p.value);
+                // Extract SNR values for statistics
+                const snrValues = data.map(p => p.snr);
                 const minSnr = Math.min(...snrValues);
                 const maxSnr = Math.max(...snrValues);
                 const avgSnr = snrValues.reduce((a, b) => a + b, 0) / snrValues.length;
@@ -199,20 +189,23 @@
                 document.getElementById('minSnr').textContent = minSnr.toFixed(2);
                 document.getElementById('avgSnr').textContent = avgSnr.toFixed(2);
                 
-                // Normalize values to 0-1 range for heatmap
-                const normalizedData = heatmapData.map(point => ({
-                    lat: point.lat,
-                    lng: point.lng,
-                    value: (point.value - minSnr) / (maxSnr - minSnr)
-                }));
+                // Normalize SNR values to 0-1 scale for heatmap intensity
+                const normalizeValue = (value) => (value - minSnr) / (maxSnr - minSnr);
                 
-                // Create heatmap configuration
-                const heatmapConfig = {
-                    radius: 50,
+                // Convert data to Leaflet.heat format: [lat, lng, intensity]
+                const heatmapData = data.map(point => [
+                    parseFloat(point.latitude),
+                    parseFloat(point.Longitude),
+                    normalizeValue(point.snr)
+                ]);
+                
+                // Create and add heatmap layer
+                const heat = L.heatLayer(heatmapData, {
+                    radius: 40,
+                    blur: 35,
                     maxZoom: 18,
-                    maxOpacity: 0.8,
-                    minOpacity: 0.1,
-                    blur: 85,
+                    max: 1.0,
+                    minOpacity: 0.2,
                     gradient: {
                         0.0: '#0000ff',
                         0.25: '#00ffff',
@@ -220,27 +213,7 @@
                         0.75: '#ff8800',
                         1.0: '#ff0000'
                     }
-                };
-                
-                // Convert to heatmap.js format
-                const points = normalizedData.map(p => [p.lat, p.lng, p.value]);
-                
-                // Create heatmap layer
-                const heatmapLayer = new HeatmapOverlay(heatmapConfig);
-                
-                // Create the data object
-                const heatData = {
-                    max: 1,
-                    min: 0,
-                    data: normalizedData.map(p => ({
-                        lat: p.lat,
-                        lng: p.lng,
-                        value: Math.round(p.value * 100)
-                    }))
-                };
-                
-                heatmapLayer.setData(heatData);
-                heatmapLayer.addTo(map);
+                }).addTo(map);
                 
                 // Add markers for each data point
                 data.forEach(point => {
