@@ -1,0 +1,264 @@
+/* BexleyMesh Custom CSS */
+
+/* Smooth scrolling is handled by HTML class: scroll-smooth */
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* Dark Mode Scrollbar */
+.dark ::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* Custom Typography */
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: color 200ms, background-color 200ms;
+}
+
+code, pre {
+    font-family: 'Fira Code', monospace;
+}
+
+/* Hero gradient background */
+.hero-gradient {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.dark .hero-gradient {
+    background: linear-gradient(135deg, #15803d 0%, #0f172a 100%);
+}
+
+/* Card shadows */
+.card-shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 200ms;
+}
+
+.card-shadow:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Blog post styling */
+.prose {
+    max-width: none;
+}
+
+.prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.dark .prose h1 {
+    color: #ffffff;
+}
+
+.prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.dark .prose h2 {
+    color: #ffffff;
+}
+
+.prose h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.dark .prose h3 {
+    color: #ffffff;
+}
+
+.prose p {
+    color: #374151;
+    margin-bottom: 1rem;
+    line-height: 1.625;
+}
+
+.dark .prose p {
+    color: #d1d5db;
+}
+
+.prose a {
+    color: #22c55e;
+    text-decoration: none;
+}
+
+.prose a:hover {
+    text-decoration: underline;
+}
+
+.dark .prose a {
+    color: #86efac;
+}
+
+.prose code {
+    background-color: #f3f4f6;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.dark .prose code {
+    background-color: #1f2937;
+}
+
+.prose pre {
+    background-color: #111827;
+    color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.prose ul, .prose ol {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.prose li {
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.dark .prose li {
+    color: #d1d5db;
+}
+
+/* Status indicators */
+.status-online {
+    background-color: #22c55e;
+}
+
+.dark .status-online {
+    background-color: #16a34a;
+}
+
+.status-offline {
+    background-color: #ef4444;
+}
+
+.dark .status-offline {
+    background-color: #dc2626;
+}
+
+.status-unknown {
+    background-color: #6b7280;
+}
+
+.dark .status-unknown {
+    background-color: #4b5563;
+}
+
+/* Pulse animation for live indicators */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse-custom {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Loading animation */
+.skeleton {
+    background-color: #e5e7eb;
+    border-radius: 0.25rem;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.dark .skeleton {
+    background-color: #374151;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: #e5e7eb;
+    }
+    100% {
+        background-color: #f3f4f6;
+    }
+}
+
+@keyframes skeleton-loading-dark {
+    0% {
+        background-color: #374151;
+    }
+    100% {
+        background-color: #1f2937;
+    }
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .prose h1 {
+        font-size: 1.5rem;
+    }
+
+    .prose h2 {
+        font-size: 1.25rem;
+    }
+
+    .prose h3 {
+        font-size: 1.125rem;
+    }
+}
+
+/* Link styling for better accessibility */
+a:focus-visible {
+    outline: 2px solid #22c55e;
+    outline-offset: 2px;
+}
+
+.dark a:focus-visible {
+    outline-color: #86efac;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none;
+    }
+}
