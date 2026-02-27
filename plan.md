@@ -193,6 +193,7 @@ BexleyMesh/
 - Discord server
 - GitHub Pages hosting
 - Custom domain DNS
+- Google Analytics (web traffic monitoring)
 
 ### Technologies & Libraries
 - Tailwind CSS (already in use)
