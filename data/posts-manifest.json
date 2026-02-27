@@ -1,0 +1,26 @@
+[
+    {
+        "filename": "2026-02-14-solar-repeater.md",
+        "title": "New Solar Repeater Deployed on North Ridge",
+        "date": "2026-02-14",
+        "author": "Admin",
+        "tags": ["Hardware", "Announcements"],
+        "excerpt": "We've successfully installed a Rak19007 based solar node at the highest point in the county. Coverage tests show connectivity extending 15km south."
+    },
+    {
+        "filename": "2026-02-10-getting-started.md",
+        "title": "Getting Started with MeshCore Agents",
+        "date": "2026-02-10",
+        "author": "Admin",
+        "tags": ["Guides", "Hardware"],
+        "excerpt": "A step-by-step guide to configuring your first MeshCore agent and connecting to the local MQTT broker for hybrid connectivity."
+    },
+    {
+        "filename": "2026-02-07-welcome.md",
+        "title": "Welcome to BexleyMesh",
+        "date": "2026-02-07",
+        "author": "Admin",
+        "tags": ["Announcements"],
+        "excerpt": "An introduction to the BexleyMesh project, our vision for off-grid communications, and how you can get involved."
+    }
+]

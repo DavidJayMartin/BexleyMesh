@@ -1,0 +1,60 @@
+{
+  "lastUpdated": "2026-02-27T14:32:00Z",
+  "totalNodes": 3,
+  "onlineNodes": 2,
+  "nodes": [
+    {
+      "id": "node-north-ridge",
+      "name": "North Ridge Repeater",
+      "status": "online",
+      "location": {
+        "latitude": 40.1245,
+        "longitude": -82.9876,
+        "address": "North Ridge, Bexley"
+      },
+      "lastSeen": "2026-02-27T14:32:00Z",
+      "signalStrength": -95,
+      "batteryLevel": null,
+      "uptime": "98.7%",
+      "hardware": "RAK19007",
+      "firmware": "meshcore-2.1.0"
+    },
+    {
+      "id": "node-downtown",
+      "name": "Downtown Node",
+      "status": "online",
+      "location": {
+        "latitude": 40.1234,
+        "longitude": -82.9765,
+        "address": "Downtown Bexley"
+      },
+      "lastSeen": "2026-02-27T14:30:00Z",
+      "signalStrength": -102,
+      "batteryLevel": 87,
+      "uptime": "99.2%",
+      "hardware": "RAK4631",
+      "firmware": "meshcore-2.1.0"
+    },
+    {
+      "id": "node-park",
+      "name": "Park Node",
+      "status": "offline",
+      "location": {
+        "latitude": 40.1189,
+        "longitude": -82.9834,
+        "address": "Central Park, Bexley"
+      },
+      "lastSeen": "2026-02-27T08:15:00Z",
+      "signalStrength": null,
+      "batteryLevel": 23,
+      "uptime": "92.1%",
+      "hardware": "RAK3272S",
+      "firmware": "meshcore-2.0.8"
+    }
+  ],
+  "networkStats": {
+    "averageSignal": -99,
+    "messageCount24h": 1247,
+    "meshHealth": "good"
+  }
+}

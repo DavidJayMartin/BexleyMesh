@@ -2,6 +2,7 @@
 node_modules/
 dist/
 build/
+agent-results/
 *.min.js
 *.min.css
 
@@ -24,8 +25,8 @@ env/
 .DS_Store
 
 # Generated Files
-data/repeater-status.json
-data/posts-manifest.json
+# data/repeater-status.json
+# data/posts-manifest.json
 
 # Logs
 *.log
