@@ -412,7 +412,9 @@
         // Load and display network status
         async function loadNetworkStatus() {
             try {
-                const response = await fetch('data/repeater-status.json');
+                // Detect if running on GitHub Pages and set base path accordingly
+                const basePath = window.location.hostname === 'davidjaymartin.github.io' ? '/bexleymesh/' : '/';
+                const response = await fetch(basePath + 'data/repeater-status.json');
                 const data = await response.json();
                 const container = document.getElementById('network-status-container');
                 
