@@ -5,9 +5,7 @@
 const config = {
     postsDir: 'posts/',
     dataDir: 'data/',
-    postsPerPage: 10,
-    // Detect if running on GitHub Pages and set base path accordingly
-    basePath: window.location.hostname === 'davidjaymartin.github.io' ? '/bexleymesh/' : '/'
+    postsPerPage: 10
 };
 
 // YAML Front Matter Parser (kept for backwards compatibility)
@@ -143,7 +141,7 @@ class BlogManager {
 
     async loadPosts() {
         try {
-            const response = await fetch(config.basePath + 'data/posts-manifest.json');
+            const response = await fetch('data/posts-manifest.json');
             const manifest = await response.json();
             
             // Check if manifest is array of objects (new format) or array of strings (old format)
@@ -165,7 +163,7 @@ class BlogManager {
 
     async loadPost(filename, metadata = {}) {
         try {
-            const response = await fetch(config.basePath + 'posts/' + filename);
+            const response = await fetch('posts/' + filename);
             const content = await response.text();
             
             // Use provided metadata, or parse from YAML front-matter as fallback
