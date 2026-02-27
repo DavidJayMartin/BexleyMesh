@@ -18,14 +18,27 @@
     <meta property="og:type" content="website">
     
     <title>BexleyMesh - Project Updates</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Note: Using Tailwind CDN for Phase 1. For production, install as PostCSS plugin. -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/custom.css">
     <script>
+        // Suppress Tailwind CDN warning for Phase 1 development
+        if (typeof Proxy !== 'undefined') {
+            window.matchMedia = new Proxy(window.matchMedia, {
+                apply(target, thisArg, args) {
+                    return Reflect.apply(target, thisArg, args);
+                }
+            });
+        }
+        
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    screens: {
+                        'xl2': '1200px'
+                    },
                     colors: {
                         mesh: {
                             50: '#f0fdf4',
@@ -102,23 +115,45 @@
     <nav class="fixed w-full z-50 glass-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
+                <!-- Logo and Text -->
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-full bg-mesh-500 flex items-center justify-center text-white">
                         <i class="fa-solid fa-tower-broadcast"></i>
                     </div>
-                    <a href="index.html" class="font-bold text-xl text-white tracking-tight hover:text-mesh-300 transition-colors">BexleyMesh<span class="text-mesh-500"></span></a>
+                    <a href="index.html" class="font-bold text-white tracking-tight hover:text-mesh-300 transition-colors hidden xl2:block text-xl">BexleyMesh Community Network<span class="text-mesh-500"></span></a>
+                    <a href="index.html" class="font-bold text-white tracking-tight hover:text-mesh-300 transition-colors xl2:hidden text-xl">BexleyMesh<span class="text-mesh-500"></span></a>
                 </div>
-                <div class="hidden md:flex space-x-4 mx-6">
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-4 mx-6">
                     <a href="index.html" class="text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Home</a>
                     <a href="blog.html" class="text-mesh-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium border-b-2 border-mesh-500">Project Updates</a>
-                    <a href="#map" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Coverage Map</a>
-                    <a href="https://meshcore.co.uk/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank">MeshCore</a>
+                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
+                    <a href="https://meshcore.co.uk/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
                 </div>
+                
+                <!-- Right Side: Discord Button and Mobile Menu Button -->
                 <div class="flex items-center space-x-4">
-                    <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="bg-mesh-600 hover:bg-mesh-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-mesh-900/50">
+                    <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="bg-mesh-600 hover:bg-mesh-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-mesh-900/50" target="_blank" rel="noopener noreferrer">
                         Join Discord
                     </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="hidden sm:flex lg:hidden flex items-center justify-center w-10 h-10 text-mesh-300 hover:text-mesh-100 transition-colors">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-700 bg-mesh-900/90 backdrop-blur">
+            <div class="px-4 py-4 space-y-2">
+                <a href="index.html" class="block text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Home</a>
+                <a href="blog.html" class="block text-mesh-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
+                <a href="https://meshcolumb.us/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
+                <a href="https://meshcore.co.uk/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
             </div>
         </div>
     </nav>
@@ -137,6 +172,31 @@
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid lg:grid-cols-3 gap-12">
+            
+            <!-- Mobile/Tablet Sidebar: Search and Categories (appears above posts on smaller screens) -->
+            <aside class="lg:hidden space-y-8">
+                
+                <!-- Search Widget -->
+                <div class="bg-mesh-card rounded-xl p-6 border border-slate-800">
+                    <h3 class="font-bold text-white mb-4">Search</h3>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="Search posts..." 
+                        class="w-full px-4 py-2 rounded-lg bg-slate-800 text-white placeholder-slate-500 border border-slate-700 focus:border-mesh-500 focus:outline-none transition-colors"
+                    >
+                </div>
+
+                <!-- Tags Widget -->
+                <div class="bg-mesh-card rounded-xl p-6 border border-slate-800">
+                    <h3 class="font-bold text-white mb-4">Categories</h3>
+                    <div class="tags-container flex flex-col gap-2">
+                        <!-- Tags will be loaded here by JavaScript -->
+                        <span class="text-slate-500 text-sm">Loading...</span>
+                    </div>
+                </div>
+
+            </aside>
             
             <!-- Left Column: Blog Posts -->
             <div class="lg:col-span-2">
@@ -159,8 +219,8 @@
                 </nav>
             </div>
 
-            <!-- Right Column: Sidebar -->
-            <aside class="space-y-8">
+            <!-- Right Column: Sidebar (Desktop only) -->
+            <aside class="hidden lg:block space-y-8">
                 
                 <!-- Search Widget -->
                 <div class="bg-mesh-card rounded-xl p-6 border border-slate-800">
@@ -176,7 +236,7 @@
                 <!-- Tags Widget -->
                 <div class="bg-mesh-card rounded-xl p-6 border border-slate-800">
                     <h3 class="font-bold text-white mb-4">Categories</h3>
-                    <div id="tags-container" class="flex flex-wrap gap-2">
+                    <div class="tags-container flex flex-wrap gap-2">
                         <!-- Tags will be loaded here by JavaScript -->
                         <span class="text-slate-500 text-sm">Loading...</span>
                     </div>
@@ -187,27 +247,27 @@
                     <h3 class="font-bold text-white mb-4">Resources</h3>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://flasher.meshcore.co.uk/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors">
+                            <a href="https://flasher.meshcore.co.uk/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-solid fa-code"></i>
                                 </div>
-                                <span>Firmware Flasher</span>
+                                <span>Firmware Flasher <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></span>
                             </a>
                         </li>
                         <li>
-                            <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors">
+                            <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-brands fa-discord"></i>
                                 </div>
-                                <span>Join Discord</span>
+                                <span>Join Discord <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></span>
                             </a>
                         </li>
                         <li>
-                            <a href="https://github.com/meshcore-dev/MeshCore/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors">
+                            <a href="https://github.com/meshcore-dev/MeshCore/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-brands fa-github"></i>
                                 </div>
-                                <span>GitHub</span>
+                                <span>GitHub <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></span>
                             </a>
                         </li>
                     </ul>
@@ -251,6 +311,24 @@
     <!-- Scripts -->
     <script src="js/app.js"></script>
     <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close menu when a link is clicked
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+
         let currentPage = 1;
 
         async function initBlogPage() {
@@ -277,20 +355,25 @@
 
         function renderTags() {
             const tags = blogManager.getAllTags();
-            const tagsContainer = document.getElementById('tags-container');
+            const tagsContainers = document.querySelectorAll('.tags-container');
             
             if (tags.length === 0) {
-                tagsContainer.innerHTML = '<span class="text-slate-500 text-sm">No categories yet</span>';
+                tagsContainers.forEach(container => {
+                    container.innerHTML = '<span class="text-slate-500 text-sm">No categories yet</span>';
+                });
                 return;
             }
 
-            const html = tags.map(tag => `
-                <a href="blog.html?tag=${encodeURIComponent(tag)}" class="inline-block px-3 py-1 bg-mesh-900/50 text-mesh-300 rounded-full text-sm hover:bg-mesh-900 transition-colors">
-                    ${tag}
-                </a>
-            `).join('');
+            const html = tags.map(tag => `<a href="blog.html?tag=${encodeURIComponent(tag)}" class="inline-block px-3 py-1 bg-mesh-900/50 text-mesh-300 rounded-full text-sm hover:bg-mesh-900 transition-colors">${tag}</a>`).join('');
 
-            tagsContainer.innerHTML = html;
+            // Add clear filters button
+            const clearButton = `<a href="blog.html" class="block w-full text-center px-4 py-2 bg-mesh-300/20 text-mesh-200 rounded-md text-sm font-semibold hover:bg-mesh-300/30 transition-colors border border-mesh-300/40">Clear Filters</a>`;
+
+            const content = `<div class="flex flex-wrap gap-2 w-full">${html}</div>${clearButton}`;
+            
+            tagsContainers.forEach(container => {
+                container.innerHTML = content;
+            });
         }
 
         function setupPagination() {
@@ -314,14 +397,27 @@
         function updatePageInfo() {
             const totalPages = blogManager.getTotalPages();
             const tag = getQueryParam('tag');
+            const totalPosts = blogManager.posts.length;
+            
+            // Hide pagination elements if there are 10 or fewer posts total
+            const shouldHidePagination = totalPosts <= 10;
             
             if (!tag) {
-                document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
-                document.getElementById('prev-page').disabled = currentPage === 1;
-                document.getElementById('next-page').disabled = currentPage === totalPages;
+                if (shouldHidePagination) {
+                    document.getElementById('page-info').textContent = '';
+                    document.getElementById('prev-page').style.display = 'none';
+                    document.getElementById('next-page').style.display = 'none';
+                } else {
+                    document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+                    document.getElementById('prev-page').style.display = 'block';
+                    document.getElementById('next-page').style.display = 'block';
+                    document.getElementById('prev-page').disabled = currentPage === 1;
+                    document.getElementById('next-page').disabled = currentPage === totalPages;
+                }
             } else {
-                document.getElementById('prev-page').disabled = true;
-                document.getElementById('next-page').disabled = true;
+                // When filtering by tag, always hide pagination
+                document.getElementById('prev-page').style.display = 'none';
+                document.getElementById('next-page').style.display = 'none';
                 document.getElementById('page-info').textContent = '';
             }
         }

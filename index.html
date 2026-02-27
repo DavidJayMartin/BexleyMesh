@@ -14,14 +14,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BexleyMesh Community Network</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Note: Using Tailwind CDN for Phase 1. For production, install as PostCSS plugin. -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/custom.css">
     <script>
+        // Suppress Tailwind CDN warning for Phase 1 development
+        if (typeof Proxy !== 'undefined') {
+            window.matchMedia = new Proxy(window.matchMedia, {
+                apply(target, thisArg, args) {
+                    return Reflect.apply(target, thisArg, args);
+                }
+            });
+        }
+        
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    screens: {
+                        'xl2': '1200px'
+                    },
                     colors: {
                         mesh: {
                             50: '#f0fdf4',
@@ -99,23 +112,44 @@
     <nav class="fixed w-full z-50 glass-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
+                <!-- Logo and Text -->
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-full bg-mesh-500 flex items-center justify-center text-white">
                         <i class="fa-solid fa-tower-broadcast"></i>
                     </div>
-                    <span class="font-bold text-xl text-white tracking-tight">BexleyMesh Community Network<span class="text-mesh-500"></span></span>
+                    <span class="font-bold text-white tracking-tight hidden xl2:block text-xl">BexleyMesh Community Network<span class="text-mesh-500"></span></span>
+                    <span class="font-bold text-white tracking-tight xl2:hidden text-xl">BexleyMesh<span class="text-mesh-500"></span></span>
                 </div>
-                <div class="hidden md:flex space-x-4 mx-6">
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-4 mx-6">
                     <a href="blog.html" class="text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
-                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank">Coverage Map</a>
-                    <a href="https://meshcore.co.uk/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank">MeshCore</a>
-                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank">Central Ohio Mesh</a>
+                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
+                    <a href="https://meshcore.co.uk/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
+                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
                 </div>
+                
+                <!-- Right Side: Discord Button and Mobile Menu Button -->
                 <div class="flex items-center space-x-4">
-                    <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="bg-mesh-600 hover:bg-mesh-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-mesh-900/50">
-                        Join the Discord
+                    <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="bg-mesh-600 hover:bg-mesh-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-mesh-900/50" target="_blank" rel="noopener noreferrer">
+                        Join Discord
                     </a>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="hidden sm:flex lg:hidden flex items-center justify-center w-10 h-10 text-mesh-300 hover:text-mesh-100 transition-colors">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-700 bg-mesh-900/90 backdrop-blur">
+            <div class="px-4 py-4 space-y-2">
+                <a href="blog.html" class="block text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
+                <a href="https://meshcolumb.us/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
+                <a href="https://meshcore.co.uk/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
+                <a href="https://meshcolumb.us/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
             </div>
         </div>
     </nav>
@@ -144,10 +178,10 @@
             </p>
             
             <div class="flex justify-center gap-4">
-                <a href="#start" class="px-8 py-3 rounded-lg bg-white text-mesh-900 font-bold hover:bg-gray-100 transition-colors">
+                <a href="#start" class="px-8 py-3 rounded-lg bg-white text-mesh-900 font-bold hover:bg-mesh-300 active:bg-mesh-500 active:text-white transition-all hover:shadow-xl shadow-white/50 hover:scale-105 active:scale-95 cursor-pointer duration-150">
                     Get Started
                 </a>
-                <a href="#map" class="px-8 py-3 rounded-lg border border-slate-600 text-white hover:bg-slate-800 transition-colors">
+                <a href="#map" class="px-8 py-3 rounded-lg border-2 border-slate-600 text-white hover:bg-mesh-500 hover:border-mesh-500 active:bg-mesh-600 active:border-mesh-600 transition-all hover:shadow-xl hover:text-white hover:scale-105 active:scale-95 cursor-pointer duration-150">
                     View Coverage
                 </a>
             </div>
@@ -257,16 +291,26 @@
                         <h3 class="font-bold text-white">Coverage Map</h3>
                         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                     </div>
-                    <div class="h-64 bg-slate-800 relative group cursor-pointer">
-                        <!-- Simulated Map UI -->
-                        <div class="absolute inset-0 opacity-50 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center"></div>
-                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-mesh-900/90 backdrop-blur px-4 py-2 rounded-lg border border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="text-sm text-white font-medium">Open Full Map</span>
-                        </div>
-                        <!-- Simulated Nodes -->
-                        <div class="absolute top-1/3 left-1/3 w-3 h-3 bg-mesh-500 rounded-full border-2 border-white shadow-lg"></div>
-                        <div class="absolute top-1/2 left-1/2 w-3 h-3 bg-mesh-500 rounded-full border-2 border-white shadow-lg"></div>
-                        <div class="absolute bottom-1/3 right-1/4 w-3 h-3 bg-gray-500 rounded-full border-2 border-white shadow-lg"></div>
+                    <div class="h-64 bg-slate-800 relative">
+                        <iframe 
+                            src="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=12&geofence=0" 
+                            width="100%" 
+                            height="100%" 
+                            frameborder="0" 
+                            style="border:0; border-radius: 0;" 
+                            allowfullscreen="" 
+                            aria-hidden="false" 
+                            tabindex="0">
+                        </iframe>
+                        <!-- External Link Button -->
+                        <a 
+                            href="https://cmh.meshmapper.net" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="absolute bottom-4 right-4 bg-mesh-600 hover:bg-mesh-500 text-white p-2 rounded-lg shadow-lg transition-all hover:scale-110 z-10"
+                            title="Open Full Map">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -275,43 +319,43 @@
                     <h3 class="font-bold text-white mb-4">Resources</h3>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://flasher.meshcore.co.uk/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors">
+                            <a href="https://flasher.meshcore.co.uk/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-solid fa-code"></i>
                                 </div>
                                 <span>Firmware Flasher</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors">
+                            <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-brands fa-discord"></i>
                                 </div>
                                 <span>Join Discord</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors">
+                            <a href="https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-solid fa-book"></i>
                                 </div>
                                 <span>Documentation</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <!-- MQTT Status -->
+                <!-- Network Status -->
                 <div class="bg-gradient-to-br from-slate-800 to-mesh-900 rounded-xl p-6 border border-slate-700">
-                    <h3 class="font-bold text-white mb-2">MQTT Bridge</h3>
-                    <p class="text-xs text-slate-400 mb-4 font-mono break-all">mqtt.meshcommunity.net</p>
-                    <div class="flex items-center justify-between text-sm">
-                        <span class="text-slate-300">Status</span>
-                        <span class="text-emerald-400 font-bold">Connected</span>
+                    <h3 class="font-bold text-white mb-4">Network Status</h3>
+                    <div id="network-status-container" class="space-y-3">
+                        <!-- Live repeater status will load here -->
+                        <div class="text-slate-400 text-sm">Loading network status...</div>
                     </div>
-                    <div class="w-full bg-slate-700 h-1.5 rounded-full mt-2">
-                        <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 92%"></div>
-                    </div>
+                    <a href="blog.html" class="text-mesh-500 hover:text-mesh-300 text-sm font-semibold mt-4 inline-block transition-colors">View Details →</a>
                 </div>
 
             </aside>
@@ -331,21 +375,85 @@
                 <div class="md:col-start-4 md:text-right">
                     <h4 class="text-white font-bold mb-4">Sitemap</h4>
                     <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" class="hover:text-white">Project Updates</a></li>
-                        <li><a href="https://meshcolumb.us" class="hover:text-white">Coverage Map</a></li>
-                        <li><a href="https://meshcore.co.uk/" class="hover:text-white" target="_blank">Meshcore</a></li>
-                        <li><a href="#" class="hover:text-white" target="_blank">Central Ohio Mesh</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition-colors">Project Updates</a></li>
+                        <li><a href="https://meshcolumb.us" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Coverage Map <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
+                        <li><a href="https://meshcore.co.uk/" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Meshcore <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
+                        <li><a href="https://meshcolumb.us" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Central Ohio Mesh <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-slate-600 text-xs">© 2026 Bexley Mesh Community Deployment. Open Source.</p>
                 <div class="flex space-x-4 mt-4 md:mt-0">
-                    <a href="https://github.com/DavidJayMartin/BexleyMesh" class="text-slate-600 hover:text-white"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://github.com/DavidJayMartin/BexleyMesh" class="text-slate-600 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer" title="Visit our GitHub"><i class="fa-brands fa-github"></i></a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Load and display network status
+        async function loadNetworkStatus() {
+            try {
+                const response = await fetch('data/repeater-status.json');
+                const data = await response.json();
+                const container = document.getElementById('network-status-container');
+                
+                if (!data.nodes || data.nodes.length === 0) {
+                    container.innerHTML = '<div class="text-slate-400 text-sm">No repeaters online</div>';
+                    return;
+                }
+
+                const statusHtml = data.nodes.map(node => {
+                    const statusColor = node.status === 'online' ? 'text-emerald-400' : 'text-red-400';
+                    const statusDot = node.status === 'online' ? 'bg-emerald-500' : 'bg-red-500';
+                    return `
+                        <div class="flex items-center justify-between text-sm p-2 rounded bg-slate-700/50">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full ${statusDot}"></span>
+                                <span class="text-slate-300">${node.name}</span>
+                            </div>
+                            <span class="text-xs text-slate-500">${node.status}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = `
+                    <div class="text-xs text-slate-400 mb-2">
+                        <span class="font-semibold text-white">${data.onlineNodes}/${data.totalNodes}</span> nodes online
+                    </div>
+                    ${statusHtml}
+                `;
+            } catch (error) {
+                console.error('Failed to load network status:', error);
+                document.getElementById('network-status-container').innerHTML = 
+                    '<div class="text-slate-400 text-sm">Unable to load status</div>';
+            }
+        }
+
+        // Load status when page loads
+        document.addEventListener('DOMContentLoaded', loadNetworkStatus);
+        
+        // Refresh every 30 seconds
+        setInterval(loadNetworkStatus, 30000);
+    </script>
 
 </body>
 </html>

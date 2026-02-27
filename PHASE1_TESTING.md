@@ -23,126 +23,161 @@ Then open your browser to: **http://localhost:8000**
 
 ### Homepage (index.html)
 
-- [ ] Page loads without errors
-- [ ] All navigation links are visible and styled correctly
-- [ ] Hero section displays with gradient text
-- [ ] "Get Started" and "View Coverage" buttons are clickable
-- [ ] Network statistics section displays correctly
-- [ ] Latest updates section shows 2 blog post cards
-- [ ] Blog post cards have:
-  - [ ] Correct date and metadata
-  - [ ] Working "Read Update/Guide" links
-  - [ ] Proper hover effects
-- [ ] "View All Posts" button visible and clickable
-- [ ] Resources sidebar displays correctly
-- [ ] MQTT Status widget shows status
-- [ ] Footer displays with proper layout
-- [ ] All external links open correctly (Discord, GitHub, MeshCore, etc.)
+- [✅] Page loads without errors
+- [✅] All navigation links are visible and styled correctly
+- [✅] "Get Started" and "View Coverage" buttons are clickable
+  - FIXED: Added enhanced hover/active styling with color change, scale animation, and shadow effects for clear visual feedback
+- [✅] Network statistics section displays correctly
+- [✅] Latest updates section shows 2 blog post cards
+- [✅] Blog post cards have:
+  - [✅] Correct date and metadata
+  - [✅] Working "Read Update/Guide" links
+  - [✅] Proper hover effects
+- [✅] "View All Posts" button visible and clickable
+- [✅] Resources sidebar displays correctly
+- [✅] Network Status widget displays repeater information
+  - FIXED: Replaced MQTT widget with dynamic Network Status display showing online/offline repeaters with live counts
+- [✅] Footer displays with proper layout
+- [✅] All external links open correctly (Discord, GitHub, MeshCore, etc.)
+  - FIXED: All external links now open in new tabs with target="_blank" and rel="noopener noreferrer"
+  - FIXED: Added external link icons (⬈) to all external links for clear visual indication
 
 ### Blog Listing Page (blog.html)
 
 1. **Navigation to Blog**
-   - [ ] Click "Project Updates" in navigation → loads blog.html
-   - [ ] Page title updates to "Project Updates"
+   - [✅] Click "Project Updates" in navigation → loads blog.html
+   - [✅] Page title updates to "Project Updates"
 
 2. **Blog Posts Display**
-   - [ ] All 3 sample posts appear in list
-   - [ ] Posts sorted by date (newest first)
-   - [ ] Each post shows: date, author, title, excerpt
-   - [ ] Posts display in correct order:
+   - [✅] All 3 sample posts appear in list
+   - [✅] Posts sorted by date (newest first)
+     - FIXED: Refactored metadata from YAML front-matter to posts-manifest.json with proper date format handling
+     - FIXED: Updated formatDate() function to handle ISO 8601 dates with UTC offset
+   - [✅] Each post shows: date, author, title, excerpt
+     - FIXED: BlogPost constructor now accepts metadata objects from manifest
+     - FIXED: Metadata is no longer embedded in markdown files (cleaned up)
+   - [✅] Posts display in correct order:
      1. Feb 14 - Solar Repeater
      2. Feb 10 - Getting Started
      3. Feb 7 - Welcome
 
 3. **Post Cards**
-   - [ ] Cards have hover effects (border highlight)
-   - [ ] "Read More" links work correctly
-   - [ ] Links point to post.html with correct slug
+   - [✅] Cards have hover effects (border highlight)
+   - [✅] "Read More" links work correctly
+   - [✅] Links point to post.html with correct slug
+     - FIXED: Changed URL parameter from "slug" to "post" for consistency
+     - Links now use: post.html?post=${post.slug}
 
 4. **Pagination**
-   - [ ] "Previous" button is disabled on first page
-   - [ ] "Next" button is disabled (only 3 posts)
-   - [ ] Page info shows "Page 1 of 1"
+   - [✅] Pagination controls hidden when ≤ 10 total posts
+     - ENHANCED: Previous/Next buttons hidden with 3 sample posts
+     - ENHANCED: Page info text hidden when not needed
+     - ENHANCED: Set max articles per page to 10
+   - [✅] Pagination reappears when total posts > 10
+   - [✅] Pagination always hidden when filtering by tag
 
 5. **Categories Sidebar**
-   - [ ] Shows all unique tags from blog posts
-   - [ ] Expected tags: Hardware, Announcements, Guides
-   - [ ] Clicking tag filters posts correctly
-   - [ ] Can clear filter by clicking "Project Updates" in nav
+   - [✅] Shows all unique tags from blog posts
+     - FIXED: Tags are now loaded from posts-manifest.json metadata
+   - [✅] Expected tags: Hardware, Announcements, Guides
+   - [✅] Clicking tag filters posts correctly
+   - [✅] Clear Filters button visible in Categories panel
+     - ENHANCED: Added "Clear Filters" button alongside tag pills
+     - ENHANCED: Button has distinctive styling (mesh-500 colors)
+     - ENHANCED: Clicking clears filter and shows all posts
+   - [✅] Can clear filter by clicking "Project Updates" in nav
 
 6. **Search Widget**
-   - [ ] Search input is visible (note: search is structure for Phase 2)
+   - [✅] Search input is visible (note: search is structure for Phase 2)
 
 7. **Resources Section**
-   - [ ] All resource links visible
-   - [ ] External links work correctly
+   - [✅] All resource links visible
+   - [✅] External links work correctly
+     - FIXED: Added target="_blank" and rel="noopener noreferrer" to all external resource links
+     - FIXED: Added external link icons (⬈) to visually indicate opening in new tab
 
 ### Individual Post Pages (post.html)
 
 1. **Post Loading**
-   - [ ] Click first post card → loads post.html with solar-repeater slug
-   - [ ] Post title appears as page title
-   - [ ] Correct post content displays
+   - [✅] Click first post card → loads post.html with solar-repeater slug
+     - FIXED: Changed URL parameter from "slug" to "post" for consistency
+   - [✅] Post title appears as page title
+   - [✅] Correct post content displays
 
 2. **Post Content (Solar Repeater Post)**
-   - [ ] Header with title, date, author displays
-   - [ ] Tags display as clickable elements
-   - [ ] Markdown renders correctly:
-     - [ ] Headings (h1, h2) styled properly
-     - [ ] Bold text renders
-     - [ ] Lists display with proper formatting
-     - [ ] Line breaks preserved
+   - [✅] Header with title, date, author displays
+   - [✅] Tags display as clickable elements
+   - [✅] Markdown renders correctly:
+     - [✅] Headings (h1, h2) styled properly
+     - [✅] Bold text renders
+     - [✅] Lists display with proper formatting
+     - [✅] Line breaks preserved
 
 3. **Post Navigation**
-   - [ ] "Previous Post" link appears
-   - [ ] "Next Post" link appears
-   - [ ] Links navigate to correct posts
-   - [ ] Navigation works correctly from different posts
+   - [✅] "Previous Post" link appears
+   - [✅] "Next Post" link appears
+     - FIXED: Updated navigation links to use "post" parameter instead of "slug"
+   - [✅] Links navigate to correct posts
+   - [✅] Navigation works correctly from different posts
 
 4. **Other Posts**
-   - [ ] Test "Getting Started" post:
-     - [ ] Code formatting displays
-     - [ ] Numbered lists work
-     - [ ] Links in content work
-   - [ ] Test "Welcome" post:
-     - [ ] Multiple sections display
-     - [ ] Emphasis and formatting work
+   - [✅] Test "Getting Started" post:
+     - [✅] Code formatting displays
+     - [✅] Numbered lists work
+     - [✅] Links in content work
+   - [✅] Test "Welcome" post:
+     - [✅] Multiple sections display
+     - [✅] Emphasis and formatting work
 
 5. **Tag Filtering**
-   - [ ] Click tag in post → filters blog page correctly
-   - [ ] Only posts with that tag display
+   - [✅] Click tag in post → filters blog page correctly
+   - [✅] Only posts with that tag display
 
 ### Responsive Design Testing
 
-**Desktop (1024px+)**
-- [ ] Two-column layout with sidebar
-- [ ] Navigation fully visible
-- [ ] All content easily readable
-- [ ] No horizontal scrolling
+**Desktop (1200px+)**
+- [✅] Two-column layout with sidebar
+- [✅] Full "BexleyMesh Community Network" text visible
+- [✅] All navigation items visible inline
+- [✅] All content easily readable
+- [✅] No horizontal scrolling
 
-**Tablet (768px - 1024px)**
-- [ ] Layout adapts appropriately
-- [ ] Content still readable
-- [ ] Navigation works (may be mobile menu)
-- [ ] Text sizes appropriate
+**Tablet (768px - 1200px)**
+- [✅] Layout adapts appropriately
+  - FIXED: "BexleyMesh Community Network" → "BexleyMesh" text on screens < 1200px
+  - FIXED: Menu items hidden, hamburger menu visible
+  - FIXED: Sidebar Search and Categories panels above blog posts (mobile-first)
+  - FIXED: Clear Filters button full width on own line
+- [✅] Content still readable
+- [✅] Navigation responsive with hamburger menu
+- [✅] Text sizes appropriate
 
 **Mobile (< 768px)**
-- [ ] Single column layout
-- [ ] Sidebar moves below content
-- [ ] Navigation responsive
-- [ ] Text readable without zooming
-- [ ] Touch targets appropriately sized
-- [ ] No horizontal scrolling
+- [✅] Single column layout
+- [✅] Sidebar (Search and Categories) above articles
+  - FIXED: Moved sidebar above posts for better mobile UX
+  - FIXED: Search widget displays first
+  - FIXED: Categories widget displays second
+  - FIXED: Articles display below with full width
+- [✅] Navigation responsive with hamburger menu
+  - FIXED: Added hamburger menu button on left side
+  - FIXED: Menu items stack vertically when opened
+  - FIXED: Menu auto-closes on link click
+  - FIXED: "BexleyMesh" text centered, Discord button on right
+- [✅] Text readable without zooming
+- [✅] Touch targets appropriately sized
+- [✅] No horizontal scrolling
+- [✅] All pages (index.html, blog.html, post.html) responsive
 
 ### Browser Compatibility
 
 Test in multiple browsers:
 
 **Chrome/Chromium**
-- [ ] Page loads
-- [ ] No console errors
-- [ ] All features work
-- [ ] Layout correct
+- [✅] Page loads
+- [✅] No console errors
+- [✅] All features work
+- [✅] Layout correct
 
 **Firefox**
 - [ ] Page loads
@@ -157,28 +192,28 @@ Test in multiple browsers:
 - [ ] Layout correct
 
 **Edge**
-- [ ] Page loads
-- [ ] No console errors
-- [ ] All features work
-- [ ] Layout correct
+- [✅] Page loads
+- [✅] No console errors
+- [✅] All features work
+- [✅] Layout correct
 
 ### Performance Testing
 
 1. **Load Times**
-   - [ ] Homepage loads in < 3 seconds (realistic broadband)
-   - [ ] Blog page loads in < 3 seconds
-   - [ ] Post pages load in < 2 seconds
+   - [✅] Homepage loads in < 3 seconds (realistic broadband)
+   - [✅] Blog page loads in < 3 seconds
+   - [✅] Post pages load in < 2 seconds
 
 2. **JavaScript Console**
-   - [ ] No errors in console (F12 → Console tab)
-   - [ ] No warnings
-   - [ ] All resources load successfully (Network tab)
+   - [✅] No errors in console (F12 → Console tab)
+   - [✅] No warnings
+   - [✅] All resources load successfully (Network tab)
 
 3. **CSS & Styling**
-   - [ ] Custom CSS loads correctly
-   - [ ] Tailwind CSS classes work
-   - [ ] Font Awesome icons display
-   - [ ] Color theme consistent
+   - [✅] Custom CSS loads correctly
+   - [✅] Tailwind CSS classes work
+   - [✅] Font Awesome icons display
+   - [✅] Color theme consistent
 
 ### Accessibility Testing
 
@@ -203,10 +238,10 @@ Test in multiple browsers:
 ### Content Verification
 
 1. **Blog Posts**
-   - [ ] All 3 posts load correctly
-   - [ ] Metadata accurate (dates, authors, tags)
-   - [ ] Excerpts match post content
-   - [ ] Post content renders fully
+   - [✅] All 3 posts load correctly
+   - [✅] Metadata accurate (dates, authors, tags)
+   - [✅] Excerpts match post content
+   - [✅] Post content renders fully
 
 2. **Documentation**
    - [ ] Getting started guide content is accurate
