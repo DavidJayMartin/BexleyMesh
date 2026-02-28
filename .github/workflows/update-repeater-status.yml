@@ -1,0 +1,69 @@
+name: Update Repeater Status
+
+on:
+  schedule:
+    # Run every 5 minutes
+    - cron: '*/15 * * * *'
+  
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  fetch-repeater-data:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      actions: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+      
+      - name: Install system dependencies for headless browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser firefox xvfb
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium webdriver-manager
+      
+      - name: Fetch repeater data from letsmesh.net API
+        env:
+          DISPLAY: :99
+        run: |
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          python scripts/fetch-repeater-data.py
+      
+      - name: Check if repeater-status.json changed
+        id: check_changes
+        run: |
+          if git diff --quiet data/repeater-status.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/repeater-status.json
+          git commit -m "chore: Update repeater status data - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          git push
+      
+      - name: Workflow status
+        if: always()
+        run: |
+          echo "Workflow execution completed"
+          echo "Changed: ${{ steps.check_changes.outputs.changed }}"

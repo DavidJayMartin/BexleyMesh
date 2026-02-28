@@ -288,315 +288,65 @@ function getQueryParam(param) {
 
 // ============================================================================
 // Repeater Data Manager
-// Fetches real-time repeater data from letsmesh.net API
+// Reads repeater status from /data/repeater-status.json
+// (Updated via GitHub Actions workflow every 5 minutes)
 // ============================================================================
 
 class RepeaterDataManager {
     constructor(config = {}) {
-        this.apiUrl = config.apiUrl || 'https://api.letsmesh.net/api/packets/filtered';
-        this.observerKey = config.observerKey || '2B63BF3DF73DA29F30DF1308ACA6480E9F09ABB43A8993533465A5FED60CCAD7';
-        this.region = config.region || 'CMH';
-        this.packetLimit = config.packetLimit || 500;
-        this.onlineTimeoutMs = (config.onlineTimeoutMinutes || 60) * 60 * 1000;
-        
-        // Known repeater metadata
-        this.repeaterMetadata = {
-            "0D99036FDF510A790C2FC9257CA41ED132AB5FF35288927F61CD8EF45D2F0EC7": {
-                name: "BexleyMesh☀️♻️",
-                address: "Ohio State Fair Park, Columbus, OH",
-                hardware: "Meshtastic T-Beam V1.1",
-                firmware: "Meshtastic"
-            },
-            "CC540240BAF29FF141A5F70D87622C3716B6E810AF1097E80D4D2A442E1414E4": {
-                name: "TJ00",
-                address: "Downtown Columbus, OH",
-                hardware: "Unknown",
-                firmware: "Meshtastic"
-            }
-        };
-        
+        this.dataUrl = config.dataUrl || '/data/repeater-status.json';
+        this.cacheExpiry = (config.cacheExpiryMinutes || 1) * 60 * 1000; // 1 minute cache
         this.data = null;
         this.lastFetch = null;
     }
     
     /**
-     * Fetch packet data from letsmesh.net API
-     * @returns {Promise<Array|null>} Array of packets or null on error
+     * Fetch repeater status from local JSON file
+     * File is updated by GitHub Actions workflow every 5 minutes
+     * @returns {Promise<Object|null>} Repeater status data or null on error
      */
-    async fetchApiData() {
+    async fetchData() {
         try {
-            const params = new URLSearchParams({
-                observer: this.observerKey,
-                region: this.region,
-                limit: this.packetLimit
-            });
+            console.log(`Fetching repeater data from: ${this.dataUrl}`);
             
-            const url = `${this.apiUrl}?${params.toString()}`;
-            console.log(`Fetching repeater data from API: ${url}`);
-            
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            
+            const response = await fetch(this.dataUrl);
             if (!response.ok) {
-                console.error(`API error: ${response.status} ${response.statusText}`);
+                console.error(`Fetch error: ${response.status} ${response.statusText}`);
                 return null;
             }
             
-            const packets = await response.json();
-            console.log(`Successfully retrieved ${packets.length} packets from API`);
-            return packets;
+            const data = await response.json();
+            console.log(`Successfully retrieved repeater status data`);
+            return data;
             
         } catch (error) {
-            console.error('Error fetching API data:', error);
+            console.error('Error fetching repeater data:', error);
             return null;
         }
     }
     
     /**
-     * Extract repeater data from API packets
-     * Groups packets by repeater and extracts most recent advertisement
-     * @param {Array} packets - Array of packet objects from API
-     * @returns {Object} Dictionary mapping public_key to repeater data
-     */
-    extractRepeaterData(packets) {
-        const repeaters = {};
-        
-        for (const packet of packets) {
-            try {
-                // Only interested in advertisement packets
-                if (packet.payload_type !== 'Advert') continue;
-                
-                const decoded = packet.decoded_payload;
-                if (!decoded) continue;
-                
-                // Only interested in Repeater type nodes
-                if (decoded.mode !== 'Repeater') continue;
-                
-                const publicKey = packet.public_key;
-                if (!publicKey) continue;
-                
-                const heardAt = packet.heard_at;
-                const rssi = packet.rssi || 0;
-                const nodeName = packet.node_name || decoded.name || 'Unknown';
-                
-                // Update or create repeater entry (keep most recent heard_at)
-                if (!repeaters[publicKey] || heardAt > repeaters[publicKey].heard_at) {
-                    repeaters[publicKey] = {
-                        publicKey,
-                        heardAt,
-                        rssi,
-                        nodeName,
-                        lat: decoded.lat,
-                        lon: decoded.lon,
-                        decoded
-                    };
-                }
-            } catch (error) {
-                console.warn('Error processing packet:', error);
-                continue;
-            }
-        }
-        
-        console.log(`Extracted data for ${Object.keys(repeaters).length} unique repeaters`);
-        return repeaters;
-    }
-    
-    /**
-     * Determine if repeater is online based on last heard time
-     * @param {string} heardAt - ISO format timestamp
-     * @returns {string} "online" or "offline"
-     */
-    determineStatus(heardAt) {
-        try {
-            const heardTime = new Date(heardAt);
-            const now = new Date();
-            const timeSinceHeard = now - heardTime;
-            
-            return timeSinceHeard < this.onlineTimeoutMs ? 'online' : 'offline';
-        } catch (error) {
-            console.warn(`Error parsing timestamp ${heardAt}:`, error);
-            return 'offline';
-        }
-    }
-    
-    /**
-     * Calculate signal strength percentage from RSSI value
-     * RSSI typical range: -120 to 0 dBm
-     * @param {number} rssi - RSSI value in dBm
-     * @returns {number} Signal strength as percentage (0-100)
-     */
-    calculateSignalStrength(rssi) {
-        if (rssi === 0) return 0;
-        
-        // Clamp between -120 and 0
-        const clamped = Math.max(-120, Math.min(0, rssi));
-        // Convert: -120 dBm = 0%, 0 dBm = 100%
-        const percentage = Math.round(((clamped + 120) / 120) * 100);
-        return Math.max(0, Math.min(100, percentage));
-    }
-    
-    /**
-     * Parse ISO timestamp to local time format
-     * Converts UTC timestamp to local timezone display format
-     * @param {string} isoTimestamp - ISO format timestamp (UTC)
-     * @returns {string} Local time formatted string
-     */
-    parseTimestamp(isoTimestamp) {
-        try {
-            const dt = new Date(isoTimestamp);
-            // Format as local time: "Feb 27, 2026 4:56 PM" style
-            return dt.toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            });
-        } catch {
-            return isoTimestamp;
-        }
-    }
-    
-    /**
-     * Transform extracted repeater data into target schema
-     * @param {Object} repeatersData - Dictionary of extracted repeater data
-     * @returns {Object} Data matching repeater-status.json schema
-     */
-    transformToSchema(repeatersData) {
-        const repeatersList = [];
-        let onlineCount = 0;
-        let totalSignalStrength = 0;
-        
-        for (const [publicKey, data] of Object.entries(repeatersData)) {
-            try {
-                const status = this.determineStatus(data.heardAt);
-                const signal = this.calculateSignalStrength(data.rssi);
-                
-                // Get metadata for this repeater if available
-                const metadata = this.repeaterMetadata[publicKey] || {};
-                
-                const repeater = {
-                    id: publicKey,
-                    name: data.nodeName,
-                    status: status,
-                    location: {
-                        latitude: data.lat,
-                        longitude: data.lon,
-                        address: metadata.address || 'Location TBD'
-                    },
-                    lastSeen: this.parseTimestamp(data.heardAt),
-                    signalStrength: signal,
-                    batteryLevel: null,
-                    uptime: null,
-                    hardware: {
-                        model: metadata.hardware || 'Unknown',
-                        firmware: metadata.firmware || 'Unknown'
-                    },
-                    networkStats: {
-                        averageSignal: signal,
-                        messageCount24h: null,
-                        meshHealth: null
-                    }
-                };
-                
-                repeatersList.push(repeater);
-                
-                if (status === 'online') onlineCount++;
-                totalSignalStrength += signal;
-                
-            } catch (error) {
-                console.error(`Error transforming repeater ${publicKey}:`, error);
-                continue;
-            }
-        }
-        
-        // Calculate aggregate statistics
-        const avgSignal = repeatersList.length > 0 
-            ? Math.round(totalSignalStrength / repeatersList.length)
-            : 0;
-        
-        const output = {
-            timestamp: new Date().toISOString(),
-            region: this.region,
-            summary: {
-                totalRepeaters: repeatersList.length,
-                onlineRepeaters: onlineCount,
-                offlineRepeaters: repeatersList.length - onlineCount,
-                averageSignalStrength: avgSignal,
-                networkHealth: repeatersList.length > 0 
-                    ? Math.round((onlineCount / repeatersList.length) * 100)
-                    : 0
-            },
-            repeaters: repeatersList
-        };
-        
-        return output;
-    }
-    
-    /**
-     * Fetch and transform repeater data
-     * @returns {Promise<Object|null>} Transformed data or null on error
-     */
-    async fetchAndTransform() {
-        // Fetch data from API
-        const packets = await this.fetchApiData();
-        if (!packets) return null;
-        
-        // Extract repeater data
-        const repeatersData = this.extractRepeaterData(packets);
-        if (Object.keys(repeatersData).length === 0) {
-            console.warn('No repeater data extracted from packets');
-        }
-        
-        // Transform to schema
-        const output = this.transformToSchema(repeatersData);
-        
-        // Store and return
-        this.data = output;
-        this.lastFetch = new Date();
-        
-        console.log('Repeater data fetch and transform completed successfully');
-        return output;
-    }
-    
-    /**
-     * Get current repeater data (fetch if needed)
-     * @returns {Promise<Object|null>} Current repeater data or null on error
+     * Get repeater data with caching
+     * Returns cached data if still valid, otherwise fetches fresh data
+     * @returns {Promise<Object|null>} Repeater status object or null on error
      */
     async getData() {
-        if (!this.data) {
-            return await this.fetchAndTransform();
+        // Check if we have cached data that's still valid
+        if (this.data && this.lastFetch) {
+            const timeSinceLastFetch = Date.now() - this.lastFetch;
+            if (timeSinceLastFetch < this.cacheExpiry) {
+                console.log('Returning cached repeater data');
+                return this.data;
+            }
         }
-        return this.data;
-    }
-    
-    /**
-     * Get repeater by ID
-     * @param {string} id - Repeater public key
-     * @returns {Object|null} Repeater object or null if not found
-     */
-    async getRepeater(id) {
-        const data = await this.getData();
-        if (!data) return null;
         
-        return data.repeaters.find(r => r.id === id) || null;
-    }
-    
-    /**
-     * Get all online repeaters
-     * @returns {Promise<Array>} Array of online repeater objects
-     */
-    async getOnlineRepeaters() {
-        const data = await this.getData();
-        if (!data) return [];
-        
-        return data.repeaters.filter(r => r.status === 'online');
+        // Fetch fresh data
+        const data = await this.fetchData();
+        if (data) {
+            this.data = data;
+            this.lastFetch = Date.now();
+        }
+        return data;
     }
 }
 
