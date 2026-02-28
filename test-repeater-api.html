@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repeater API Test - BexleyMesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .status-online {
+            @apply text-green-400;
+        }
+        .status-offline {
+            @apply text-red-400;
+        }
+        .signal-bar {
+            @apply inline-block bg-green-500 h-4 rounded-sm;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">
+                <i class="fas fa-broadcast-tower text-blue-400 mr-3"></i>Repeater API Test
+            </h1>
+            <p class="text-slate-400">Real-time repeater status from letsmesh.net API</p>
+        </header>
+
+        <!-- Loading Status -->
+        <div id="loadingStatus" class="mb-6 p-4 bg-slate-800 rounded-lg border border-slate-700">
+            <p class="text-slate-300">
+                <i class="fas fa-spinner fa-spin mr-2"></i>Loading repeater data...
+            </p>
+        </div>
+
+        <!-- Error Status -->
+        <div id="errorStatus" class="hidden mb-6 p-4 bg-red-900/30 rounded-lg border border-red-700">
+            <p class="text-red-400">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <span id="errorMessage"></span>
+            </p>
+        </div>
+
+        <!-- Network Summary -->
+        <div id="summary" class="hidden mb-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+                <div class="text-slate-400 text-sm mb-1">Total Repeaters</div>
+                <div class="text-3xl font-bold text-white" id="totalRepeaters">-</div>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+                <div class="text-slate-400 text-sm mb-1">Online</div>
+                <div class="text-3xl font-bold text-green-400" id="onlineRepeaters">-</div>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+                <div class="text-slate-400 text-sm mb-1">Offline</div>
+                <div class="text-3xl font-bold text-red-400" id="offlineRepeaters">-</div>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+                <div class="text-slate-400 text-sm mb-1">Network Health</div>
+                <div class="text-3xl font-bold text-blue-400" id="networkHealth">-</div>
+            </div>
+        </div>
+
+        <!-- Repeaters List -->
+        <div id="repeatersList" class="hidden space-y-4">
+            <h2 class="text-2xl font-bold text-white mb-4">Repeaters</h2>
+            <div id="repeatersContainer">
+                <!-- Repeater cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Raw Data Display -->
+        <div class="mt-12 p-4 bg-slate-800 rounded-lg border border-slate-700">
+            <button id="toggleRaw" class="text-blue-400 hover:text-blue-300 mb-4">
+                <i class="fas fa-chevron-down mr-2"></i>Show Raw Data
+            </button>
+            <pre id="rawData" class="hidden bg-slate-950 p-4 rounded text-xs text-slate-300 overflow-x-auto max-h-96"></pre>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Test the RepeaterDataManager
+        async function testRepeaterManager() {
+            try {
+                // Show loading
+                document.getElementById('loadingStatus').classList.remove('hidden');
+                document.getElementById('summary').classList.add('hidden');
+                document.getElementById('repeatersList').classList.add('hidden');
+                document.getElementById('errorStatus').classList.add('hidden');
+                
+                // Fetch data using public method
+                console.log('Fetching repeater data...');
+                const data = await repeaterManager.getData();
+                
+                if (!data) {
+                    throw new Error('Failed to fetch repeater data');
+                }
+                
+                // Hide loading, show summary and list
+                document.getElementById('loadingStatus').classList.add('hidden');
+                document.getElementById('summary').classList.remove('hidden');
+                document.getElementById('repeatersList').classList.remove('hidden');
+                
+                // Update summary
+                document.getElementById('totalRepeaters').textContent = data.summary.totalRepeaters;
+                document.getElementById('onlineRepeaters').textContent = data.summary.onlineRepeaters;
+                document.getElementById('offlineRepeaters').textContent = data.summary.offlineRepeaters;
+                document.getElementById('networkHealth').textContent = data.summary.networkHealth + '%';
+                
+                // Render repeaters
+                const container = document.getElementById('repeatersContainer');
+                container.innerHTML = data.repeaters.map(repeater => `
+                    <div class="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-slate-600 transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">${repeater.name}</h3>
+                                <p class="text-slate-400 text-sm">${repeater.location.address}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium ${
+                                repeater.status === 'online' 
+                                    ? 'bg-green-900/30 text-green-400' 
+                                    : 'bg-red-900/30 text-red-400'
+                            }">
+                                <i class="fas fa-circle text-xs mr-2"></i>${repeater.status.toUpperCase()}
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <div class="text-slate-400 text-xs mb-1">Signal Strength</div>
+                                <div class="text-lg font-bold text-blue-400">${repeater.signalStrength}%</div>
+                                <div class="w-full bg-slate-700 h-2 rounded mt-1">
+                                    <div class="bg-blue-500 h-2 rounded" style="width: ${repeater.signalStrength}%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-slate-400 text-xs mb-1">Hardware</div>
+                                <div class="text-sm text-white">${repeater.hardware.model}</div>
+                            </div>
+                            <div>
+                                <div class="text-slate-400 text-xs mb-1">Last Seen</div>
+                                <div class="text-sm text-white">${new Date(repeater.lastSeen).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-xs text-slate-500 font-mono">
+                            ${repeater.id.substring(0, 16)}...
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Store data for raw display
+                document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                console.error('Error details:', error);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
+                document.getElementById('loadingStatus').classList.add('hidden');
+                document.getElementById('errorStatus').classList.remove('hidden');
+                document.getElementById('errorMessage').textContent = `Error: ${error.message}. Check browser console for details.`;
+            }
+        }
+        
+        // Toggle raw data display
+        document.getElementById('toggleRaw').addEventListener('click', function() {
+            const rawData = document.getElementById('rawData');
+            const icon = this.querySelector('i');
+            rawData.classList.toggle('hidden');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+            this.innerHTML = (rawData.classList.contains('hidden') ? 
+                '<i class="fas fa-chevron-down mr-2"></i>Show Raw Data' : 
+                '<i class="fas fa-chevron-up mr-2"></i>Hide Raw Data');
+        });
+        
+        // Run test on page load
+        testRepeaterManager();
+    </script>
+</body>
+</html>
