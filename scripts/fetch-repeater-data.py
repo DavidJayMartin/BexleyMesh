@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Fetch repeater status from letsmesh.net API using a headless browser with Selenium.
+Fetch repeater status from letsmesh.net API using cloudscraper.
 
-The letsmesh.net API blocks direct programmatic requests but allows browser requests.
-This script uses Selenium with Firefox/Chrome to load the page like a real browser,
-then extracts the JSON data that's loaded dynamically by the page's JavaScript.
+The letsmesh.net API is behind Cloudflare protection. This script uses
+cloudscraper to handle Cloudflare's anti-bot challenges and fetch the
+JSON data directly via HTTP.
 
 If the fetch fails, the script leaves the existing data file unchanged.
 """
@@ -13,10 +13,8 @@ import json
 import logging
 import time
 import sys
-import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from collections import defaultdict
 
 # Configure logging
 logging.basicConfig(
@@ -47,25 +45,10 @@ BACKUP_FILE = PROJECT_ROOT / "data" / "repeater-status.json.bak"
 
 def fetch_api_data(observer_key, region, max_retries=API_RETRIES):
     """
-    Fetch packet data from letsmesh.net API using browser-like HTTP requests.
+    Fetch packet data from letsmesh.net API using cloudscraper.
     
-    Uses the requests library with browser-like headers to mimic a real browser,
-    since letsmesh.net blocks requests that don't appear to come from a browser.
-    
-    Args:
-        observer_key: Observer node public key
-        region: Geographic region (e.g., CMH)
-        max_retries: Number of retry attempts
-        
-    Returns:
-        List of packet dictionaries or None if fetch fails
-    """
-def fetch_api_data(observer_key, region, max_retries=API_RETRIES):
-    """
-    Fetch packet data from letsmesh.net API using a headless browser with Selenium.
-    
-    The API page loads an HTML viewer interface that dynamically loads JSON data via JavaScript.
-    We use Selenium to load the page with Firefox and parse the page source for JSON.
+    Uses cloudscraper to handle Cloudflare's anti-bot challenges and fetch
+    JSON data directly via HTTP, without needing a full browser.
     
     Args:
         observer_key: Observer node public key
@@ -80,133 +63,68 @@ def fetch_api_data(observer_key, region, max_retries=API_RETRIES):
         return None
     
     try:
-        from selenium import webdriver
-        from selenium.webdriver.firefox.options import Options as FirefoxOptions
-        from selenium.webdriver.chrome.options import Options as ChromeOptions
-        from selenium.webdriver.common.by import By
-        from webdriver_manager.firefox import GeckoDriverManager
-        from webdriver_manager.chrome import ChromeDriverManager
-        from selenium.webdriver.firefox.service import Service as FirefoxService
-        from selenium.webdriver.chrome.service import Service as ChromeService
+        import cloudscraper
     except ImportError:
-        logger.error("Selenium not installed. Install with: pip install selenium webdriver-manager")
+        logger.error("cloudscraper not installed. Install with: pip install cloudscraper")
         return None
     
     api_url = f"{API_ENDPOINT}?observer={observer_key}&region={region}&limit=500"
     
     for attempt in range(max_retries):
-        driver = None
         try:
-            logger.info(f"Fetching API data with headless browser (attempt {attempt + 1}/{max_retries})...")
+            logger.info(f"Fetching API data (attempt {attempt + 1}/{max_retries})...")
             
-            # Try Firefox first (more reliable in headless mode)
-            try:
-                firefox_options = FirefoxOptions()
-                firefox_options.add_argument("--headless")
-                driver = webdriver.Firefox(
-                    service=FirefoxService(GeckoDriverManager().install()),
-                    options=firefox_options
-                )
-                logger.info("Using Firefox headless browser")
-            except Exception as firefox_error:
-                logger.debug(f"Firefox failed: {firefox_error}. Trying Chrome...")
-                chrome_options = ChromeOptions()
-                chrome_options.add_argument("--headless=new")
-                chrome_options.add_argument("--no-sandbox")
-                driver = webdriver.Chrome(
-                    service=ChromeService(ChromeDriverManager().install()),
-                    options=chrome_options
-                )
-                logger.info("Using Chrome headless browser")
+            scraper = cloudscraper.create_scraper(
+                browser={
+                    'browser': 'chrome',
+                    'platform': 'linux',
+                }
+            )
             
-            # Set timeouts
-            driver.set_page_load_timeout(API_TIMEOUT)
-            
-            # Load the API page
             logger.info(f"Loading: {api_url[:70]}...")
-            driver.get(api_url)
+            response = scraper.get(api_url, timeout=API_TIMEOUT)
             
-            # Wait for the page to fully load JavaScript content
-            logger.debug("Waiting for page content to load...")
-            time.sleep(5)  # Give time for page to load
+            logger.debug(f"Response status: {response.status_code}")
+            logger.debug(f"Response content length: {len(response.text)} chars")
             
-            # Firefox's JSON viewer has tabs - we need to click the "Raw Data" tab to get plain JSON
+            if response.status_code != 200:
+                logger.warning(f"HTTP {response.status_code} response")
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt
+                    logger.info(f"Waiting {wait_time}s before retry...")
+                    time.sleep(wait_time)
+                continue
+            
+            # Try to parse JSON directly
             try:
-                logger.debug("Clicking 'Raw Data' tab...")
-                raw_data_tab = driver.find_element(By.ID, "rawdata-tab")
-                raw_data_tab.click()
-                logger.debug("Clicked Raw Data tab, waiting for content...")
-                time.sleep(3)  # Wait for tab content to render
-            except Exception as e:
-                logger.debug(f"Could not click Raw Data tab: {e}")
+                data = response.json()
+                if isinstance(data, list) and len(data) > 0:
+                    logger.info(f"Successfully fetched {len(data)} packets")
+                    logger.debug(f"Sample packet 1: payload_type={data[0].get('payload_type')}")
+                    return data
+                elif isinstance(data, list):
+                    logger.warning("API returned an empty list")
+                    return data
+                else:
+                    logger.warning(f"Unexpected response type: {type(data).__name__}")
+            except json.JSONDecodeError:
+                # Response might contain HTML (Cloudflare challenge page) 
+                if "Just a moment" in response.text or "Cloudflare" in response.text:
+                    logger.warning("Got Cloudflare challenge page despite cloudscraper")
+                else:
+                    logger.warning(f"Response is not valid JSON (first 200 chars): {response.text[:200]}")
             
-            # Get the raw data panel content
-            try:
-                raw_panel = driver.find_element(By.ID, "rawdata-panel")
-                # Try textContent first (better for large JSON blocks)
-                raw_text = raw_panel.get_attribute("textContent") or raw_panel.text
-                logger.debug(f"Raw panel text length: {len(raw_text) if raw_text else 0} chars")
-                if raw_text:
-                    logger.debug(f"Raw panel preview (first 100): {raw_text[:100]}")
-                    logger.debug(f"Raw panel preview (last 100): {raw_text[-100:]}")
-                
-                if raw_text:
-                    # Find the JSON array in the text - might be wrapped or have extra content
-                    json_start = raw_text.find('[')
-                    json_end = raw_text.rfind(']')
-                    
-                    if json_start != -1 and json_end != -1 and json_end > json_start:
-                        json_str = raw_text[json_start:json_end+1]
-                        logger.debug(f"Extracted JSON substring length: {len(json_str)} chars")
-                        try:
-                            data = json.loads(json_str)
-                            if isinstance(data, list) and len(data) > 0:
-                                logger.info(f"Successfully extracted {len(data)} packets from Raw Data tab")
-                                # Log sample packets for debugging
-                                if data and len(data) > 0:
-                                    logger.debug(f"Sample packet 1: payload_type={data[0].get('payload_type')}, decoded_mode={data[0].get('decoded_payload', {}).get('mode') if data[0].get('payload_type') == 'Advert' else 'N/A'}")
-                                return data
-                        except json.JSONDecodeError as e:
-                            logger.debug(f"Failed to parse extracted JSON: {e}")
-            except Exception as e:
-                logger.debug(f"Could not get raw panel: {e}")
-            
-            # Fallback: Try to get JSON from page source or body
-            page_source = driver.page_source
-            logger.debug(f"Trying page source (length {len(page_source)} chars)...")
-            
-            # Try to extract JSON from page source
-            start_idx = page_source.find('[')
-            if start_idx != -1:
-                # Limit search to first 100000 chars to avoid performance issues
-                search_text = page_source[start_idx:start_idx+100000]
-                # Try progressively smaller chunks
-                for end_offset in range(len(search_text), 100, -1000):
-                    candidate = search_text[:end_offset].strip()
-                    if candidate.endswith(']'):
-                        try:
-                            data = json.loads(candidate)
-                            if isinstance(data, list) and len(data) > 0:
-                                logger.info(f"Successfully extracted {len(data)} packets from page source")
-                                return data
-                        except:
-                            pass
-            
-            logger.error("Could not extract valid JSON from page")
-            return None
-            
-        except Exception as e:
-            logger.warning(f"Browser fetch error: {str(e)[:100]} (attempt {attempt + 1}/{max_retries})")
             if attempt < max_retries - 1:
                 wait_time = 2 ** attempt
                 logger.info(f"Waiting {wait_time}s before retry...")
                 time.sleep(wait_time)
-        finally:
-            if driver:
-                try:
-                    driver.quit()
-                except:
-                    pass
+                
+        except Exception as e:
+            logger.warning(f"Fetch error: {str(e)[:200]} (attempt {attempt + 1}/{max_retries})")
+            if attempt < max_retries - 1:
+                wait_time = 2 ** attempt
+                logger.info(f"Waiting {wait_time}s before retry...")
+                time.sleep(wait_time)
     
     logger.error(f"Failed to fetch API data after {max_retries} attempts")
     return None
@@ -419,6 +337,24 @@ def calculate_network_stats(nodes):
 
 
 
+def load_previous_data():
+    """
+    Load previously saved repeater status data from JSON file.
+    
+    Returns:
+        Dictionary with previous data or None if file doesn't exist or is invalid
+    """
+    try:
+        if OUTPUT_FILE.exists():
+            with open(OUTPUT_FILE, 'r') as f:
+                data = json.load(f)
+            logger.info(f"Loaded previous data from {OUTPUT_FILE}")
+            return data
+    except (json.JSONDecodeError, IOError) as e:
+        logger.warning(f"Could not load previous data: {e}")
+    return None
+
+
 def save_json_data(data):
     """
     Save repeater status data to JSON file.
@@ -460,12 +396,12 @@ def main():
     logger.info(f"Region: {MESH_REGION}")
     logger.info("=" * 60)
     
-    # Fetch data from API using headless browser
+    # Fetch data from API using cloudscraper
     api_data = fetch_api_data(OBSERVER_PUBLIC_KEY, MESH_REGION)
     
     if api_data is None:
         logger.warning("Failed to fetch API data - leaving existing data file unchanged")
-        return 1
+        return 0
     
     # Filter for repeater packets
     repeater_packets = filter_repeater_packets(api_data)
