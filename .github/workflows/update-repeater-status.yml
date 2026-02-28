@@ -2,7 +2,7 @@ name: Update Repeater Status
 
 on:
   schedule:
-    # Run every 5 minutes
+    # Run every 15 minutes
     - cron: '*/15 * * * *'
   
   # Allow manual trigger from GitHub UI
@@ -35,7 +35,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install selenium webdriver-manager
+          pip install -r scripts/requirements.txt
       
       - name: Fetch repeater data from letsmesh.net API
         env:
