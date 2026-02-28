@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-02-28T19:51:49.029713+00:00",
+  "lastUpdated": "2026-02-28T20:23:17.877269+00:00",
   "totalNodes": 2,
   "onlineNodes": 2,
   "offlineNodes": 0,
   "healthPercentage": 100.0,
   "networkHealth": "excellent",
-  "averageSignal": -48.5,
+  "averageSignal": -48.0,
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -17,9 +17,9 @@
         "longitude": -82.925051,
         "address": ""
       },
-      "lastSeen": "2026-02-28T18:00:30.540Z",
-      "signalStrength": -49,
-      "signalPercentage": 59.2,
+      "lastSeen": "2026-02-28T20:00:30.580Z",
+      "signalStrength": -48,
+      "signalPercentage": 60.0,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
