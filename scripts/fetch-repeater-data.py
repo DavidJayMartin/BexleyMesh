@@ -47,21 +47,6 @@ BACKUP_FILE = PROJECT_ROOT / "data" / "repeater-status.json.bak"
 
 def fetch_api_data(observer_key, region, max_retries=API_RETRIES):
     """
-    Fetch packet data from letsmesh.net API using browser-like HTTP requests.
-    
-    Uses the requests library with browser-like headers to mimic a real browser,
-    since letsmesh.net blocks requests that don't appear to come from a browser.
-    
-    Args:
-        observer_key: Observer node public key
-        region: Geographic region (e.g., CMH)
-        max_retries: Number of retry attempts
-        
-    Returns:
-        List of packet dictionaries or None if fetch fails
-    """
-def fetch_api_data(observer_key, region, max_retries=API_RETRIES):
-    """
     Fetch packet data from letsmesh.net API using a headless browser with Selenium.
     
     The API page loads an HTML viewer interface that dynamically loads JSON data via JavaScript.
@@ -419,6 +404,24 @@ def calculate_network_stats(nodes):
 
 
 
+def load_previous_data():
+    """
+    Load previously saved repeater status data from JSON file.
+    
+    Returns:
+        Dictionary with previous data or None if file doesn't exist or is invalid
+    """
+    try:
+        if OUTPUT_FILE.exists():
+            with open(OUTPUT_FILE, 'r') as f:
+                data = json.load(f)
+            logger.info(f"Loaded previous data from {OUTPUT_FILE}")
+            return data
+    except (json.JSONDecodeError, IOError) as e:
+        logger.warning(f"Could not load previous data: {e}")
+    return None
+
+
 def save_json_data(data):
     """
     Save repeater status data to JSON file.
@@ -465,7 +468,7 @@ def main():
     
     if api_data is None:
         logger.warning("Failed to fetch API data - leaving existing data file unchanged")
-        return 1
+        return 0
     
     # Filter for repeater packets
     repeater_packets = filter_repeater_packets(api_data)
