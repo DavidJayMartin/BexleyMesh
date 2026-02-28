@@ -1,9 +1,9 @@
 name: Update Repeater Status
 
 on:
-  schedule:
+  #schedule:
     # Run every 15 minutes
-    - cron: '*/15 * * * *'
+    #- cron: '*/15 * * * *'
   
   # Allow manual trigger from GitHub UI
   workflow_dispatch:
