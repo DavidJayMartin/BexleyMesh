@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "lastUpdated": "2026-03-01T14:32:50.134590+00:00",
   "totalNodes": 2,
+=======
+  "lastUpdated": "2026-03-01T14:50:27.017532+00:00",
+  "totalNodes": 3,
+>>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
   "onlineNodes": 2,
   "offlineNodes": 0,
   "healthPercentage": 100.0,
@@ -20,6 +25,7 @@
         "longitude": -82.925051,
         "address": ""
       },
+<<<<<<< HEAD
       "lastSeen": "2026-03-01T14:00:32.058Z",
       "signalStrength": -51,
       "signalPercentage": 57.5,
@@ -27,6 +33,38 @@
       "averageRSSI": -60.3,
       "averageRSSIPercentage": 49.8,
       "activityPacketCount": 1028,
+=======
+      "lastSeen": "2026-03-01T14:37:21.878Z",
+      "signalStrength": -51,
+      "signalPercentage": 57.5,
+      "averageSNR": 9.8,
+      "averageRSSI": -60.4,
+      "averageRSSIPercentage": 49.7,
+      "activityPacketCount": 1030,
+      "batteryLevel": null,
+      "uptime": null,
+      "hardware": "Unknown",
+      "firmware": "Unknown",
+      "role": "Repeater"
+    },
+    {
+      "id": "node-a12d8581f54c",
+      "name": "Repeato",
+      "status": "offline",
+      "publicKey": "A12D8581F54CBC2815BFBC2D32B59AE7F0FDE4D3AE4ABFAFA5E721338122289C",
+      "location": {
+        "latitude": 39.96885,
+        "longitude": -82.99202,
+        "address": ""
+      },
+      "lastSeen": "2026-02-28T19:44:46.949Z",
+      "signalStrength": -59,
+      "signalPercentage": 50.8,
+      "averageSNR": 11.2,
+      "averageRSSI": -47.8,
+      "averageRSSIPercentage": 60.2,
+      "activityPacketCount": 45,
+>>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -43,6 +81,7 @@
         "longitude": -82.92721,
         "address": ""
       },
+<<<<<<< HEAD
       "lastSeen": "2026-03-01T11:41:20.064Z",
       "signalStrength": -51,
       "signalPercentage": 57.5,
@@ -50,6 +89,15 @@
       "averageRSSI": -88.0,
       "averageRSSIPercentage": 26.7,
       "activityPacketCount": 405,
+=======
+      "lastSeen": "2026-03-01T14:37:21.878Z",
+      "signalStrength": -51,
+      "signalPercentage": 57.5,
+      "averageSNR": 3.3,
+      "averageRSSI": -88.1,
+      "averageRSSIPercentage": 26.6,
+      "activityPacketCount": 406,
+>>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
