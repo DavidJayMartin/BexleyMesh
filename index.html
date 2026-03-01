@@ -46,6 +46,7 @@
                             500: '#22c55e', // Standard Green
                             600: '#16a34a',
                             700: '#15803d',
+                            800: '#166534',
                             900: '#14532d',
                             dark: '#0f172a',
                             card: '#1e293b'
@@ -223,13 +224,13 @@
             <!-- Right Column: Sidebar / Widgets -->
             <aside class="space-y-8">
                 <!-- Network Status -->
-                <div class="bg-gradient-to-br from-slate-800 to-mesh-900 rounded-xl p-6 border border-slate-700">
-                    <h3 class="font-bold text-white mb-4">Network Status</h3>
-                    <div id="network-status-container" class="space-y-3">
+                <div class="bg-gradient-to-br from-mesh-800 to-mesh-900 rounded-xl p-6 border border-mesh-700 shadow-lg">
+                    <h3 class="font-bold text-white mb-4 text-lg">Network Status</h3>
+                    <div id="network-status-container" class="space-y-2">
                         <!-- Live repeater status will load here -->
-                        <div class="text-slate-400 text-sm">Loading network status...</div>
+                        <div class="text-slate-300 text-sm">Loading network status...</div>
                     </div>
-                    <a href="blog.html" class="text-mesh-500 hover:text-mesh-300 text-sm font-semibold mt-4 inline-block transition-colors">View Details →</a>
+                    <a href="blog.html" class="text-mesh-300 hover:text-mesh-100 text-sm font-semibold mt-4 inline-block transition-colors">View Details →</a>
                 </div>
 
                 <!-- Map Widget Placeholder -->
@@ -331,38 +332,39 @@
 
                 // Update sidebar network status widget
                 if (!data.nodes || data.nodes.length === 0) {
-                    container.innerHTML = '<div class="text-slate-400 text-sm">No repeaters online</div>';
+                    container.innerHTML = '<div class="text-slate-300 text-sm">No repeaters online</div>';
                     return;
                 }
 
-                const statusHtml = data.nodes.map(node => {
-                    const statusColor = node.status === 'online' ? 'text-emerald-400' : 'text-red-400';
-                    const statusDot = node.status === 'online' ? 'bg-emerald-500' : 'bg-red-500';
+                    const statusHtml = data.nodes.map(node => {
+                    const statusColor = node.status === 'online' ? 'text-mesh-300' : 'text-red-400';
+                    const statusDot = node.status === 'online' ? 'bg-mesh-500' : 'bg-red-500';
+                    const borderColor = node.status === 'online' ? 'border-l-mesh-500' : 'border-l-red-500';
                     const lastSeen = node.lastSeen ? new Date(node.lastSeen).toLocaleString() : 'Unknown';
                     return `
-                        <div class="text-sm p-2 rounded bg-slate-700/50">
+                        <div class="text-sm p-3 rounded bg-slate-800 border-l-4 ${borderColor}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2 h-2 rounded-full ${statusDot}"></span>
-                                    <span class="text-slate-300">${node.name}</span>
+                                    <span class="text-slate-100 font-medium">${node.name}</span>
                                 </div>
-                                <span class="text-xs text-slate-500">${node.status}</span>
+                                <span class="text-xs font-semibold ${statusColor} uppercase">${node.status}</span>
                             </div>
-                            <div class="text-xs text-slate-500 mt-1 ml-4">Last heard: ${lastSeen}</div>
+                            <div class="text-xs text-slate-400 mt-2 ml-4">Last heard: ${lastSeen}</div>
                         </div>
                     `;
                 }).join('');
 
                 container.innerHTML = `
-                    <div class="text-xs text-slate-400 mb-2">
-                        <span class="font-semibold text-white">${data.onlineNodes}/${data.totalNodes}</span> repeaters online
+                    <div class="text-sm text-slate-300 mb-3 pb-2 border-b border-slate-700">
+                        <span class="font-bold text-white text-base">${data.onlineNodes}/${data.totalNodes}</span> repeaters online
                     </div>
                     ${statusHtml}
                 `;
             } catch (error) {
                 console.error('Failed to load network status:', error);
                 document.getElementById('network-status-container').innerHTML = 
-                    '<div class="text-slate-400 text-sm">Unable to load status</div>';
+                    '<div class="text-slate-300 text-sm">Unable to load status</div>';
             }
         }
 
