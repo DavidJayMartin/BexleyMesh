@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 API_ENDPOINT = "https://api.letsmesh.net/api/packets/filtered"
 API_TIMEOUT = 30  # seconds
 API_RETRIES = 3
+API_LIMIT = 5000  # Request up to 5000 records (API defaults to 500 if omitted)
 ONLINE_THRESHOLD_MINUTES = 240  # Node is online if heard within last 240 minutes
 RSSI_MIN = -120  # dBm
 RSSI_MAX = 0  # dBm
@@ -68,7 +69,7 @@ def fetch_api_data(observer_key, region, max_retries=API_RETRIES):
         logger.error("cloudscraper not installed. Install with: pip install cloudscraper")
         return None
     
-    api_url = f"{API_ENDPOINT}?observer={observer_key}&region={region}&limit=500"
+    api_url = f"{API_ENDPOINT}?observer={observer_key}&region={region}&limit={API_LIMIT}"
     
     for attempt in range(max_retries):
         try:
@@ -146,8 +147,9 @@ def filter_repeater_packets(packets):
     repeater_packets = []
     for packet in packets:
         # Filter for Advert type packets with Repeater mode
+        decoded = packet.get("decoded_payload") or {}
         if (packet.get("payload_type") == "Advert" and 
-            packet.get("decoded_payload", {}).get("mode") == "Repeater"):
+            decoded.get("mode") == "Repeater"):
             repeater_packets.append(packet)
             logger.debug(f"Found repeater packet: {packet.get('decoded_payload', {}).get('name')} (id={packet.get('id')})")
     
@@ -169,7 +171,8 @@ def aggregate_repeaters(packets):
     
     for packet in packets:
         # Public key is in decoded_payload for Advert packets
-        public_key = packet.get("decoded_payload", {}).get("public_key")
+        decoded = packet.get("decoded_payload") or {}
+        public_key = decoded.get("public_key")
         if not public_key:
             continue
         
@@ -185,6 +188,168 @@ def aggregate_repeaters(packets):
     
     logger.info(f"Aggregated into {len(repeaters)} unique repeaters")
     return repeaters
+
+
+def find_repeater_activity(all_packets, repeater_keys):
+    """
+    Scan all packets to find repeater activity.
+    
+    A packet is considered to involve a repeater if:
+    1. The packet's decoded_payload.public_key matches a repeater's public key, OR
+    2. The first 2 characters of a repeater's public_key appear in the packet's path value
+    
+    Either match counts as a positive indicator that the repeater was active.
+    
+    Args:
+        all_packets: List of all packet dicts from the API
+        repeater_keys: Set of repeater public keys (from Advert packets)
+        
+    Returns:
+        Dict mapping repeater_key -> {
+            "last_heard_at": str (ISO timestamp),
+            "snr_values": list of floats,
+            "rssi_values": list of floats,
+            "packet_count": int
+        }
+    """
+    # Build lookup structures with case-insensitive matching
+    normalized_keys = {k.lower(): k for k in repeater_keys}
+    
+    # Map 2-char prefixes to their repeater keys
+    key_prefixes = {}
+    for key in repeater_keys:
+        prefix = key[:2].lower()
+        if prefix not in key_prefixes:
+            key_prefixes[prefix] = []
+        key_prefixes[prefix].append(key)
+    
+    # Initialize activity tracking for each repeater
+    activity = {
+        key: {"last_heard_at": "", "snr_values": [], "rssi_values": [], "packet_count": 0}
+        for key in repeater_keys
+    }
+    
+    for packet in all_packets:
+        decoded = packet.get("decoded_payload") or {}
+        packet_public_key = (decoded.get("public_key") or "").lower()
+        path = str(packet.get("path", "")).lower()
+        heard_at = packet.get("heard_at", "")
+        snr = packet.get("snr")
+        rssi = packet.get("rssi")
+        
+        matched_repeaters = set()
+        
+        # Check 1: Does this packet's public_key match a known repeater?
+        if packet_public_key and packet_public_key in normalized_keys:
+            matched_repeaters.add(normalized_keys[packet_public_key])
+        
+        # Check 2: Does any repeater's 2-char prefix appear in the path?
+        if path:
+            for prefix, keys in key_prefixes.items():
+                if prefix in path:
+                    for key in keys:
+                        matched_repeaters.add(key)
+        
+        # Update activity for all matched repeaters
+        for repeater_key in matched_repeaters:
+            act = activity[repeater_key]
+            act["packet_count"] += 1
+            
+            if heard_at and heard_at > act["last_heard_at"]:
+                act["last_heard_at"] = heard_at
+            
+            if snr is not None:
+                try:
+                    act["snr_values"].append(float(snr))
+                except (ValueError, TypeError):
+                    pass
+            
+            if rssi is not None:
+                try:
+                    act["rssi_values"].append(float(rssi))
+                except (ValueError, TypeError):
+                    pass
+    
+    for key, act in activity.items():
+        logger.debug(f"Repeater {key[:8]}: {act['packet_count']} packets, last heard: {act['last_heard_at'][:19] if act['last_heard_at'] else 'never'}")
+    
+    logger.info(f"Scanned {len(all_packets)} packets for activity across {len(repeater_keys)} repeaters")
+    return activity
+
+
+def count_companion_nodes(packets):
+    """
+    Count unique Companion nodes active in the last 30 days.
+    
+    Filters for packets where decoded_payload.mode == "Companion"
+    and heard_at is within the last 30 days, then counts unique
+    public keys.
+    
+    Args:
+        packets: List of all packet dicts from API
+        
+    Returns:
+        int: Count of unique companion public keys
+    """
+    now = datetime.now(timezone.utc)
+    thirty_days_ago = now - timedelta(days=30)
+    companion_keys = set()
+    
+    for packet in packets:
+        decoded = packet.get("decoded_payload") or {}
+        if decoded.get("mode") == "Companion":
+            heard_at_str = packet.get("heard_at", "")
+            if heard_at_str:
+                try:
+                    heard_at = datetime.fromisoformat(heard_at_str.replace('Z', '+00:00'))
+                    if heard_at >= thirty_days_ago:
+                        public_key = decoded.get("public_key")
+                        if public_key:
+                            companion_keys.add(public_key.lower())
+                except (ValueError, AttributeError):
+                    pass
+    
+    logger.info(f"Found {len(companion_keys)} unique companion nodes active in last 30 days")
+    return len(companion_keys)
+
+
+def count_messages(packets):
+    """
+    Count text messages from the last 30 days.
+    
+    Counts packets where payload_type is "TextMessage" or "GroupText",
+    excluding any with decoded_payload.channel_hash == 81.
+    Only counts messages with heard_at within the last 30 days.
+    
+    Args:
+        packets: List of all packet dicts from API
+        
+    Returns:
+        int: Count of distinct matching messages (deduplicated by hash)
+    """
+    now = datetime.now(timezone.utc)
+    thirty_days_ago = now - timedelta(days=30)
+    message_hashes = set()
+    
+    for packet in packets:
+        payload_type = packet.get("payload_type", "")
+        if payload_type in ("TextMessage", "GroupText"):
+            decoded = packet.get("decoded_payload") or {}
+            if decoded.get("channel_hash") == 81:
+                continue
+            heard_at_str = packet.get("heard_at", "")
+            if heard_at_str:
+                try:
+                    heard_at = datetime.fromisoformat(heard_at_str.replace('Z', '+00:00'))
+                    if heard_at >= thirty_days_ago:
+                        msg_hash = packet.get("hash")
+                        if msg_hash:
+                            message_hashes.add(msg_hash)
+                except (ValueError, AttributeError):
+                    pass
+    
+    logger.info(f"Found {len(message_hashes)} distinct messages (TextMessage/GroupText, excl. channel_hash=81) in last 30 days")
+    return len(message_hashes)
 
 
 def calculate_online_status(heard_at_str, threshold_minutes=ONLINE_THRESHOLD_MINUTES):
@@ -239,19 +404,26 @@ def calculate_rssi_percentage(rssi_dbm):
         return None
 
 
-def build_node_record(public_key, packet):
+def build_node_record(public_key, packet, activity=None):
     """
-    Build a node record from a repeater advertisement packet.
+    Build a node record from a repeater advertisement packet and activity data.
     
     Args:
         public_key: Unique node identifier
-        packet: API packet dictionary
+        packet: API packet dictionary (Advert packet for metadata)
+        activity: Activity dict with last_heard_at, snr_values, rssi_values
         
     Returns:
         Node record dictionary
     """
-    decoded = packet.get("decoded_payload", {})
-    heard_at_str = packet.get("heard_at", "")
+    decoded = packet.get("decoded_payload") or {}
+    
+    # Use activity-based heard_at if available, otherwise fall back to packet heard_at
+    if activity and activity.get("last_heard_at"):
+        heard_at_str = activity["last_heard_at"]
+    else:
+        heard_at_str = packet.get("heard_at", "")
+    
     status, heard_dt = calculate_online_status(heard_at_str)
     
     # Generate a simple ID from public key
@@ -260,6 +432,16 @@ def build_node_record(public_key, packet):
     # Extract location
     latitude = decoded.get("lat")
     longitude = decoded.get("lon")
+    
+    # Calculate average SNR from activity data
+    avg_snr = None
+    if activity and activity.get("snr_values"):
+        avg_snr = round(sum(activity["snr_values"]) / len(activity["snr_values"]), 1)
+    
+    # Calculate average RSSI from activity data
+    avg_rssi = None
+    if activity and activity.get("rssi_values"):
+        avg_rssi = round(sum(activity["rssi_values"]) / len(activity["rssi_values"]), 1)
     
     record = {
         "id": node_id,
@@ -274,6 +456,10 @@ def build_node_record(public_key, packet):
         "lastSeen": heard_at_str,
         "signalStrength": packet.get("rssi"),
         "signalPercentage": calculate_rssi_percentage(packet.get("rssi")),
+        "averageSNR": avg_snr,
+        "averageRSSI": avg_rssi,
+        "averageRSSIPercentage": calculate_rssi_percentage(avg_rssi),
+        "activityPacketCount": activity.get("packet_count", 0) if activity else 0,
         "batteryLevel": None,  # Not available from API
         "uptime": None,  # Not available from API
         "hardware": decoded.get("hw_model", "Unknown"),
@@ -284,12 +470,13 @@ def build_node_record(public_key, packet):
     return record
 
 
-def calculate_network_stats(nodes):
+def calculate_network_stats(nodes, companion_count=0):
     """
     Calculate aggregate network statistics.
     
     Args:
         nodes: List of node records
+        companion_count: Number of unique companion nodes active in last 30 days
         
     Returns:
         Dictionary with network statistics
@@ -300,6 +487,8 @@ def calculate_network_stats(nodes):
             "onlineNodes": 0,
             "offlineNodes": 0,
             "averageSignal": None,
+            "averageSNR": None,
+            "companionCount": companion_count,
             "networkHealth": "unknown",
             "lastUpdated": datetime.now(timezone.utc).isoformat()
         }
@@ -308,9 +497,18 @@ def calculate_network_stats(nodes):
     online = sum(1 for n in nodes if n["status"] == "online")
     offline = total - online
     
-    # Calculate average signal strength (for nodes that have it)
-    signals = [n["signalStrength"] for n in nodes if n["signalStrength"] is not None]
+    # Calculate average signal strength from per-node averageRSSI (or fallback to signalStrength)
+    signals = []
+    for n in nodes:
+        if n.get("averageRSSI") is not None:
+            signals.append(n["averageRSSI"])
+        elif n.get("signalStrength") is not None:
+            signals.append(n["signalStrength"])
     avg_signal = round(sum(signals) / len(signals), 1) if signals else None
+    
+    # Calculate average SNR across all nodes
+    snr_values = [n["averageSNR"] for n in nodes if n.get("averageSNR") is not None]
+    avg_snr = round(sum(snr_values) / len(snr_values), 1) if snr_values else None
     
     # Calculate network health percentage
     health_percent = round((online / total * 100), 1) if total > 0 else 0
@@ -331,6 +529,8 @@ def calculate_network_stats(nodes):
         "offlineNodes": offline,
         "healthPercentage": health_percent,
         "averageSignal": avg_signal,
+        "averageSNR": avg_snr,
+        "companionCount": companion_count,
         "networkHealth": health_status,
         "lastUpdated": datetime.now(timezone.utc).isoformat()
     }
@@ -403,7 +603,7 @@ def main():
         logger.warning("Failed to fetch API data - leaving existing data file unchanged")
         return 0
     
-    # Filter for repeater packets
+    # Step 1: Filter for repeater advertisement packets to identify repeaters
     repeater_packets = filter_repeater_packets(api_data)
     
     if not repeater_packets:
@@ -415,14 +615,27 @@ def main():
             save_json_data(previous_data)
             return 0
     
-    # Aggregate repeaters by public key
+    # Aggregate repeaters by public key (for metadata: name, location, hardware)
     repeaters = aggregate_repeaters(repeater_packets)
+    repeater_keys = set(repeaters.keys())
     
-    # Build node records
-    nodes = [build_node_record(pk, packet) for pk, packet in repeaters.items()]
+    # Step 2: Scan ALL packets for repeater activity (public_key match or path match)
+    activity = find_repeater_activity(api_data, repeater_keys)
     
-    # Calculate network statistics
-    stats = calculate_network_stats(nodes)
+    # Step 3: Count unique Companion nodes active in last 30 days
+    companion_count = count_companion_nodes(api_data)
+    
+    # Step 4: Count text messages in last 30 days
+    message_count = count_messages(api_data)
+    
+    # Build node records with activity data (includes avg SNR, avg RSSI, last heard)
+    nodes = [
+        build_node_record(pk, packet, activity.get(pk))
+        for pk, packet in repeaters.items()
+    ]
+    
+    # Calculate network statistics (includes companion count)
+    stats = calculate_network_stats(nodes, companion_count)
     
     # Build output structure
     output = {
@@ -433,6 +646,9 @@ def main():
         "healthPercentage": stats["healthPercentage"],
         "networkHealth": stats["networkHealth"],
         "averageSignal": stats["averageSignal"],
+        "averageSNR": stats["averageSNR"],
+        "companionCount": stats["companionCount"],
+        "messageCount": message_count,
         "nodes": sorted(nodes, key=lambda n: n["name"])
     }
     
@@ -444,6 +660,9 @@ def main():
         logger.info(f"  - Offline: {stats['offlineNodes']}")
         logger.info(f"  - Network Health: {stats['networkHealth']} ({stats['healthPercentage']}%)")
         logger.info(f"  - Avg Signal: {stats['averageSignal']} dBm")
+        logger.info(f"  - Avg SNR: {stats['averageSNR']} dB")
+        logger.info(f"  - Companion Nodes (30d): {stats['companionCount']}")
+        logger.info(f"  - Messages (30d): {message_count}")
         logger.info("=" * 60)
         return 0
     else:

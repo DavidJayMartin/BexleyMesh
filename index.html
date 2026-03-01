@@ -124,9 +124,9 @@
                 <!-- Desktop Menu -->
                 <div class="hidden lg:flex space-x-4 mx-6">
                     <a href="blog.html" class="text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
-                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
-                    <a href="https://meshcore.co.uk/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
-                    <a href="https://meshcolumb.us/" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
+                    <a href="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=15&geofence=0&utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
+                    <a href="https://meshcolumb.us?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
+                    <a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
                 </div>
                 
                 <!-- Right Side: Discord Button and Mobile Menu Button -->
@@ -147,9 +147,9 @@
         <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-700 bg-mesh-900/90 backdrop-blur">
             <div class="px-4 py-4 space-y-2">
                 <a href="blog.html" class="block text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
-                <a href="https://meshcolumb.us/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
-                <a href="https://meshcore.co.uk/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
-                <a href="https://meshcolumb.us/" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
+                <a href="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=15&geofence=0&utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
+                <a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
+                <a href="https://meshcolumb.us?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
             </div>
         </div>
     </nav>
@@ -161,9 +161,9 @@
         <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] z-0 pointer-events-none"></div>
         
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="inline-flex items-center space-x-2 bg-mesh-900/50 border border-mesh-500/30 rounded-full px-3 py-1 mb-8 backdrop-blur-sm">
-                <span class="w-2 h-2 rounded-full bg-mesh-500 node-pulse"></span>
-                <span class="text-xs text-mesh-300 uppercase tracking-wider font-semibold">Network Status: Online</span>
+            <div id="network-status-badge" class="inline-flex items-center space-x-2 bg-mesh-900/50 border border-mesh-500/30 rounded-full px-3 py-1 mb-8 backdrop-blur-sm">
+                <span id="node-pulse" class="w-2 h-2 rounded-full bg-mesh-500 node-pulse"></span>
+                <span id="network-status-text" class="text-xs text-mesh-300 uppercase tracking-wider font-semibold">Network Status: Loading...</span>
             </div>
             
             <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-6">
@@ -181,7 +181,7 @@
                 <a href="#start" class="px-8 py-3 rounded-lg bg-white text-mesh-900 font-bold hover:bg-mesh-300 active:bg-mesh-500 active:text-white transition-all hover:shadow-xl shadow-white/50 hover:scale-105 active:scale-95 cursor-pointer duration-150">
                     Get Started
                 </a>
-                <a href="#map" class="px-8 py-3 rounded-lg border-2 border-slate-600 text-white hover:bg-mesh-500 hover:border-mesh-500 active:bg-mesh-600 active:border-mesh-600 transition-all hover:shadow-xl hover:text-white hover:scale-105 active:scale-95 cursor-pointer duration-150">
+                <a href="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=15&geofence=0&utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="px-8 py-3 rounded-lg border-2 border-slate-600 text-white hover:bg-mesh-500 hover:border-mesh-500 active:bg-mesh-600 active:border-mesh-600 transition-all hover:shadow-xl hover:text-white hover:scale-105 active:scale-95 cursor-pointer duration-150">
                     View Coverage
                 </a>
             </div>
@@ -193,22 +193,21 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
-                    <div class="text-3xl font-bold text-white">1</div>
-                    <div class="text-sm text-slate-400 mt-1">Active Nodes</div>
+                    <div id="stat-total-nodes" class="text-3xl font-bold text-white">--</div>
+                    <div class="text-sm text-slate-400 mt-1">Active Repeaters</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-white">910.525</div>
-                    <div class="text-sm text-slate-400 mt-1">MHz Frequency</div>
+                    <div id="stat-companion-count" class="text-3xl font-bold text-white">--</div>
+                    <div class="text-sm text-slate-400 mt-1">Active Companions (30d)</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-white">Bandwidth</div>
-                    <div class="text-sm text-slate-400 mt-1">Primary Channel</div>
+                    <div id="stat-message-count" class="text-3xl font-bold text-white">--</div>
+                    <div class="text-sm text-slate-400 mt-1">Total Messages (30d)</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-white">99.9%</div>
-                    <div class="text-sm text-slate-400 mt-1">Uptime</div>
+                    <div id="stat-avg-signal" class="text-3xl font-bold text-white">--</div>
+                    <div class="text-sm text-slate-400 mt-1">Avg Signal Strength</div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -284,7 +283,16 @@
 
             <!-- Right Column: Sidebar / Widgets -->
             <aside class="space-y-8">
-                
+                <!-- Network Status -->
+                <div class="bg-gradient-to-br from-slate-800 to-mesh-900 rounded-xl p-6 border border-slate-700">
+                    <h3 class="font-bold text-white mb-4">Network Status</h3>
+                    <div id="network-status-container" class="space-y-3">
+                        <!-- Live repeater status will load here -->
+                        <div class="text-slate-400 text-sm">Loading network status...</div>
+                    </div>
+                    <a href="blog.html" class="text-mesh-500 hover:text-mesh-300 text-sm font-semibold mt-4 inline-block transition-colors">View Details →</a>
+                </div>
+
                 <!-- Map Widget Placeholder -->
                 <div class="bg-mesh-card rounded-xl border border-slate-800 overflow-hidden">
                     <div class="p-4 border-b border-slate-800 flex justify-between items-center">
@@ -304,7 +312,7 @@
                         </iframe>
                         <!-- External Link Button -->
                         <a 
-                            href="https://cmh.meshmapper.net" 
+                            href="https://cmh.meshmapper.net?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             class="absolute bottom-4 right-4 bg-mesh-600 hover:bg-mesh-500 text-white p-2 rounded-lg shadow-lg transition-all hover:scale-110 z-10"
@@ -319,7 +327,7 @@
                     <h3 class="font-bold text-white mb-4">Resources</h3>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://flasher.meshcore.co.uk/" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
+                            <a href="https://flasher.meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                                 <div class="w-8 flex justify-center shrink-0 mr-2">
                                     <i class="fa-solid fa-code"></i>
                                 </div>
@@ -347,17 +355,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- Network Status -->
-                <div class="bg-gradient-to-br from-slate-800 to-mesh-900 rounded-xl p-6 border border-slate-700">
-                    <h3 class="font-bold text-white mb-4">Network Status</h3>
-                    <div id="network-status-container" class="space-y-3">
-                        <!-- Live repeater status will load here -->
-                        <div class="text-slate-400 text-sm">Loading network status...</div>
-                    </div>
-                    <a href="blog.html" class="text-mesh-500 hover:text-mesh-300 text-sm font-semibold mt-4 inline-block transition-colors">View Details →</a>
-                </div>
-
             </aside>
         </div>
     </div>
@@ -376,9 +373,9 @@
                     <h4 class="text-white font-bold mb-4">Sitemap</h4>
                     <ul class="space-y-2 text-sm text-slate-500">
                         <li><a href="blog.html" class="hover:text-white transition-colors">Project Updates</a></li>
-                        <li><a href="https://meshcolumb.us" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Coverage Map <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
-                        <li><a href="https://meshcore.co.uk/" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Meshcore <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
-                        <li><a href="https://meshcolumb.us" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Central Ohio Mesh <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
+                        <li><a href="https://cmh.meshmapper.net?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Coverage Map <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
+                        <li><a href="https://meshcolumb.us?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Central Ohio Mesh <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
+                        <li><a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Meshcore <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -409,13 +406,62 @@
             });
         });
 
+        // Determine network status label and color from health percentage
+        function getNetworkStatus(healthPercentage, onlineNodes, totalNodes) {
+            if (totalNodes === 0 || onlineNodes === 0) {
+                return { label: 'OFFLINE', color: [255, 0, 0] };
+            }
+            const pct = (onlineNodes / totalNodes) * 100;
+            if (pct > 75) return { label: 'ONLINE', color: [34, 197, 94] };
+            if (pct >= 25) return { label: 'REDUCED COVERAGE', color: [248, 255, 43] };
+            return { label: 'LIMITED COVERAGE', color: [255, 152, 43] };
+        }
+
+        // Update the node-pulse animation with a dynamic color
+        function updatePulseColor(element, r, g, b) {
+            element.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            // Inject a dynamic keyframe for the pulse animation
+            let styleEl = document.getElementById('dynamic-pulse-style');
+            if (!styleEl) {
+                styleEl = document.createElement('style');
+                styleEl.id = 'dynamic-pulse-style';
+                document.head.appendChild(styleEl);
+            }
+            styleEl.textContent = `
+                @keyframes pulse-dynamic {
+                    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(${r}, ${g}, ${b}, 0.7); }
+                    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(${r}, ${g}, ${b}, 0); }
+                    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(${r}, ${g}, ${b}, 0); }
+                }
+            `;
+            element.style.animation = 'pulse-dynamic 2s infinite';
+        }
+
         // Load and display network status
         async function loadNetworkStatus() {
             try {
                 const response = await fetch('data/repeater-status.json');
                 const data = await response.json();
                 const container = document.getElementById('network-status-container');
-                
+                const statusText = document.getElementById('network-status-text');
+                const nodePulse = document.getElementById('node-pulse');
+                const statusBadge = document.getElementById('network-status-badge');
+
+                // Update network status badge (Task 1.4)
+                const status = getNetworkStatus(data.healthPercentage, data.onlineNodes, data.totalNodes);
+                statusText.textContent = `Network Status: ${status.label}`;
+                const [r, g, b] = status.color;
+                updatePulseColor(nodePulse, r, g, b);
+                // Update border color of the badge to match
+                statusBadge.style.borderColor = `rgba(${r}, ${g}, ${b}, 0.3)`;
+
+                // Update Live Stats (Task 1.5)
+                document.getElementById('stat-total-nodes').textContent = `${data.onlineNodes || 0}/${data.totalNodes || 0}`;
+                document.getElementById('stat-avg-signal').textContent = data.averageSignal !== null ? `${data.averageSignal} dBm` : 'N/A';
+                document.getElementById('stat-companion-count').textContent = data.companionCount !== undefined ? data.companionCount : '--';
+                document.getElementById('stat-message-count').textContent = data.messageCount !== undefined ? data.messageCount : '--';
+
+                // Update sidebar network status widget
                 if (!data.nodes || data.nodes.length === 0) {
                     container.innerHTML = '<div class="text-slate-400 text-sm">No repeaters online</div>';
                     return;
@@ -424,20 +470,24 @@
                 const statusHtml = data.nodes.map(node => {
                     const statusColor = node.status === 'online' ? 'text-emerald-400' : 'text-red-400';
                     const statusDot = node.status === 'online' ? 'bg-emerald-500' : 'bg-red-500';
+                    const lastSeen = node.lastSeen ? new Date(node.lastSeen).toLocaleString() : 'Unknown';
                     return `
-                        <div class="flex items-center justify-between text-sm p-2 rounded bg-slate-700/50">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full ${statusDot}"></span>
-                                <span class="text-slate-300">${node.name}</span>
+                        <div class="text-sm p-2 rounded bg-slate-700/50">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full ${statusDot}"></span>
+                                    <span class="text-slate-300">${node.name}</span>
+                                </div>
+                                <span class="text-xs text-slate-500">${node.status}</span>
                             </div>
-                            <span class="text-xs text-slate-500">${node.status}</span>
+                            <div class="text-xs text-slate-500 mt-1 ml-4">Last heard: ${lastSeen}</div>
                         </div>
                     `;
                 }).join('');
 
                 container.innerHTML = `
                     <div class="text-xs text-slate-400 mb-2">
-                        <span class="font-semibold text-white">${data.onlineNodes}/${data.totalNodes}</span> nodes online
+                        <span class="font-semibold text-white">${data.onlineNodes}/${data.totalNodes}</span> repeaters online
                     </div>
                     ${statusHtml}
                 `;
