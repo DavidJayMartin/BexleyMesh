@@ -14,8 +14,8 @@ function renderNavigation(containerId) {
             <div class="flex justify-between h-16 items-center">
                 <!-- Logo and Text -->
                 <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-mesh-500 flex items-center justify-center text-white">
-                        <i class="fa-solid fa-tower-broadcast"></i>
+                    <div class="w-8 h-8 flex items-center justify-center text-white">
+                        <img src="BexleyMesh.svg" alt="BexleyMesh" class="w-8 h-8">
                     </div>
                     <span class="font-bold text-white tracking-tight hidden xl2:block text-xl"><a href="index.html">BexleyMesh Community Network</a><span class="text-mesh-500"></span></span>
                     <span class="font-bold text-white tracking-tight xl2:hidden text-xl"><a href="index.html">BexleyMesh</a><span class="text-mesh-500"></span></span>
