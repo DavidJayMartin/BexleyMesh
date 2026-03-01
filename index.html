@@ -122,7 +122,8 @@
         <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] z-0 pointer-events-none"></div>
         
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div id="network-status-badge" class="inline-flex items-center space-x-2 bg-mesh-900/50 border border-mesh-500/30 rounded-full px-3 py-1 mb-8 backdrop-blur-sm">
+            <div id="network-status-badge" class="tooltip inline-flex items-center space-x-2 bg-mesh-900/50 border border-mesh-500/30 rounded-full px-3 py-1 mb-8 backdrop-blur-sm">
+                <span class="tooltip-text">Shows whether the mesh network is online, has reduced coverage, or is offline — based on how many repeaters are currently active.</span>
                 <span id="node-pulse" class="w-2 h-2 rounded-full bg-mesh-500 node-pulse"></span>
                 <span id="network-status-text" class="text-xs text-mesh-300 uppercase tracking-wider font-semibold">Network Status: Loading...</span>
             </div>
@@ -153,19 +154,23 @@
     <div class="border-y border-slate-800 bg-mesh-card/50 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
+                <div class="tooltip">
+                    <span class="tooltip-text">Number of repeater nodes currently online out of total registered repeaters. Repeaters relay messages across the mesh.</span>
                     <div id="stat-total-nodes" class="text-3xl font-bold text-white">--</div>
                     <div class="text-sm text-slate-400 mt-1">Active Repeaters</div>
                 </div>
-                <div>
+                <div class="tooltip">
+                    <span class="tooltip-text">Unique companion devices (handheld radios) that have been seen on the mesh in the last 30 days.</span>
                     <div id="stat-companion-count" class="text-3xl font-bold text-white">--</div>
                     <div class="text-sm text-slate-400 mt-1">Active Companions (30d)</div>
                 </div>
-                <div>
+                <div class="tooltip">
+                    <span class="tooltip-text">Total text messages sent across the mesh network in the last 30 days.</span>
                     <div id="stat-message-count" class="text-3xl font-bold text-white">--</div>
                     <div class="text-sm text-slate-400 mt-1">Total Messages (30d)</div>
                 </div>
-                <div>
+                <div class="tooltip">
+                    <span class="tooltip-text">Average signal strength (RSSI) across all repeaters in dBm. Closer to 0 is stronger; typical range is -120 to 0 dBm.</span>
                     <div id="stat-avg-signal" class="text-3xl font-bold text-white">--</div>
                     <div class="text-sm text-slate-400 mt-1">Avg Signal Strength</div>
                 </div>
@@ -278,12 +283,12 @@
         // Determine network status label and color from health percentage
         function getNetworkStatus(healthPercentage, onlineNodes, totalNodes) {
             if (totalNodes === 0 || onlineNodes === 0) {
-                return { label: 'OFFLINE', color: [255, 0, 0] };
+                return { label: 'OFFLINE', color: [255, 0, 0], tooltip: 'All repeaters are currently offline. The mesh network is unavailable.' };
             }
             const pct = (onlineNodes / totalNodes) * 100;
-            if (pct > 75) return { label: 'ONLINE', color: [34, 197, 94] };
-            if (pct >= 25) return { label: 'REDUCED COVERAGE', color: [248, 255, 43] };
-            return { label: 'LIMITED COVERAGE', color: [255, 152, 43] };
+            if (pct > 75) return { label: 'ONLINE', color: [34, 197, 94], tooltip: `All repeaters are active. The mesh network is fully operational with ${onlineNodes} of ${totalNodes} repeaters online.` };
+            if (pct >= 25) return { label: 'REDUCED COVERAGE', color: [248, 255, 43], tooltip: `Between 25% and 75% of repeaters are active (${onlineNodes} of ${totalNodes}). Some areas may have limited connectivity.` };
+            return { label: 'LIMITED COVERAGE', color: [255, 152, 43], tooltip: `Fewer than 25% of repeaters are active (${onlineNodes} of ${totalNodes}). Most areas will have little or no connectivity.` };
         }
 
         // Update the node-pulse animation with a dynamic color
@@ -319,6 +324,9 @@
                 // Update network status badge (Task 1.4)
                 const status = getNetworkStatus(data.healthPercentage, data.onlineNodes, data.totalNodes);
                 statusText.textContent = `Network Status: ${status.label}`;
+                // Update tooltip to match current status
+                const badgeTooltip = statusBadge.querySelector('.tooltip-text');
+                if (badgeTooltip) badgeTooltip.textContent = status.tooltip;
                 const [r, g, b] = status.color;
                 updatePulseColor(nodePulse, r, g, b);
                 // Update border color of the badge to match
