@@ -29,6 +29,7 @@ API_TIMEOUT = 30  # seconds
 API_RETRIES = 3
 API_LIMIT = 5000  # Request up to 5000 records (API defaults to 500 if omitted)
 ONLINE_THRESHOLD_MINUTES = 240  # Node is online if heard within last 240 minutes
+ADVERT_STALE_DAYS = 3  # Exclude repeaters with no advert in this many days
 RSSI_MIN = -120  # dBm
 RSSI_MAX = 0  # dBm
 
@@ -188,6 +189,59 @@ def aggregate_repeaters(packets):
     
     logger.info(f"Aggregated into {len(repeaters)} unique repeaters")
     return repeaters
+
+
+def filter_stale_repeaters(all_packets, repeaters, max_age_days=ADVERT_STALE_DAYS):
+    """
+    Remove repeaters whose most recent payload_type=Advert packet is older
+    than max_age_days.
+
+    Scans all_packets for Advert packets matching each repeater's public key
+    and uses the newest heard_at among those Adverts to decide freshness.
+
+    Args:
+        all_packets: Full list of packets from the API
+        repeaters: Dict mapping public_key to latest Advert packet (from
+                   aggregate_repeaters)
+        max_age_days: Maximum age in days for the latest Advert packet
+
+    Returns:
+        Filtered dict with stale repeaters removed
+    """
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(days=max_age_days)
+
+    # Find the latest Advert heard_at per repeater public key
+    latest_advert: dict[str, str] = {}
+    for packet in all_packets:
+        if packet.get("payload_type") != "Advert":
+            continue
+        decoded = packet.get("decoded_payload") or {}
+        pk = (decoded.get("public_key") or "").lower()
+        if pk and pk in {k.lower() for k in repeaters}:
+            heard_at_str = packet.get("heard_at", "")
+            if heard_at_str > latest_advert.get(pk, ""):
+                latest_advert[pk] = heard_at_str
+
+    filtered = {}
+    for key, packet in repeaters.items():
+        heard_at_str = latest_advert.get(key.lower(), "")
+        if heard_at_str:
+            try:
+                heard_at = datetime.fromisoformat(heard_at_str.replace('Z', '+00:00'))
+                if heard_at >= cutoff:
+                    filtered[key] = packet
+                else:
+                    name = packet.get("node_name", key[:8])
+                    logger.debug(f"Excluding stale repeater '{name}' (last Advert: {heard_at_str[:19]})")
+            except (ValueError, AttributeError):
+                logger.warning(f"Invalid heard_at for repeater {key[:8]}, excluding")
+        else:
+            logger.warning(f"No Advert heard_at for repeater {key[:8]}, excluding")
+
+    removed = len(repeaters) - len(filtered)
+    logger.info(f"Filtered out {removed} stale repeaters (no Advert in last {max_age_days} days), {len(filtered)} remain")
+    return filtered
 
 
 def find_repeater_activity(all_packets, repeater_keys):
@@ -617,6 +671,10 @@ def main():
     
     # Aggregate repeaters by public key (for metadata: name, location, hardware)
     repeaters = aggregate_repeaters(repeater_packets)
+    
+    # Exclude repeaters with no Advert packet in the last N days
+    repeaters = filter_stale_repeaters(api_data, repeaters)
+    
     repeater_keys = set(repeaters.keys())
     
     # Step 2: Scan ALL packets for repeater activity (public_key match or path match)
