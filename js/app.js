@@ -11,7 +11,7 @@ const config = {
 // YAML Front Matter Parser (kept for backwards compatibility)
 class FrontMatterParser {
     static parse(content) {
-        const fmRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+        const fmRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
         const match = content.match(fmRegex);
         
         if (!match) {
@@ -164,16 +164,18 @@ class BlogManager {
     async loadPost(filename, metadata = {}) {
         try {
             const response = await fetch('posts/' + filename);
-            const content = await response.text();
+            const rawContent = await response.text();
             
-            // Use provided metadata, or parse from YAML front-matter as fallback
+            // Always parse front matter to get the body without front matter
+            const { frontMatter, content: body } = FrontMatterParser.parse(rawContent);
+            
+            // Use provided metadata, or use parsed front-matter as fallback
             let finalMetadata = metadata;
             if (Object.keys(metadata).length === 0) {
-                const { frontMatter } = FrontMatterParser.parse(content);
                 finalMetadata = frontMatter;
             }
             
-            const post = new BlogPost(filename, finalMetadata, content);
+            const post = new BlogPost(filename, finalMetadata, body);
             this.posts.push(post);
         } catch (error) {
             console.error(`Failed to load post ${filename}:`, error);
@@ -261,7 +263,7 @@ function renderPostDetail(post, container) {
     ).join(' ');
     
     const html = `
-        <article class="max-w-4xl">
+        <article class="max-w-none">
             <header class="mb-8 pb-8 border-b border-slate-800">
                 <h1 class="text-4xl font-bold text-white mb-4">${post.title}</h1>
                 <div class="flex items-center text-slate-400 text-sm space-x-4 flex-wrap gap-2">
@@ -271,7 +273,7 @@ function renderPostDetail(post, container) {
                     ${post.tags.length > 0 ? `<span>•</span><div class="flex gap-2">${tagsHtml}</div>` : ''}
                 </div>
             </header>
-            <div class="prose prose-invert text-slate-300 leading-relaxed">
+            <div class="prose prose-invert max-w-none text-slate-200 leading-relaxed">
                 ${post.htmlContent}
             </div>
         </article>

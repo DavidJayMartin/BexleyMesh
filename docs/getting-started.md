@@ -1,5 +1,6 @@
 ---
 title: Getting Started
+subtitle: Everything you need to join the BexleyMesh community network
 ---
 
 # Getting Started with BexleyMesh

@@ -1,7 +1,7 @@
 ---
 title: Getting Started with MeshCore Agents
 date: 2026-02-10
-author: Admin
+author: DavidJay
 tags: Guides, Hardware
 excerpt: A step-by-step guide to configuring your first MeshCore agent and connecting to the local MQTT broker for hybrid connectivity.
 ---

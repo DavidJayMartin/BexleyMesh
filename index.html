@@ -108,51 +108,8 @@
 </head>
 <body class="bg-mesh-dark text-slate-300 font-sans antialiased selection:bg-mesh-500 selection:text-white">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <!-- Logo and Text -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-mesh-500 flex items-center justify-center text-white">
-                        <i class="fa-solid fa-tower-broadcast"></i>
-                    </div>
-                    <span class="font-bold text-white tracking-tight hidden xl2:block text-xl">BexleyMesh Community Network<span class="text-mesh-500"></span></span>
-                    <span class="font-bold text-white tracking-tight xl2:hidden text-xl">BexleyMesh<span class="text-mesh-500"></span></span>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden lg:flex space-x-4 mx-6">
-                    <a href="blog.html" class="text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
-                    <a href="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=15&geofence=0&utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
-                    <a href="https://meshcolumb.us?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
-                    <a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
-                </div>
-                
-                <!-- Right Side: Discord Button and Mobile Menu Button -->
-                <div class="flex items-center space-x-4">
-                    <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="bg-mesh-600 hover:bg-mesh-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-mesh-900/50" target="_blank" rel="noopener noreferrer">
-                        Join Discord
-                    </a>
-                    
-                    <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-btn" class="hidden sm:flex lg:hidden flex items-center justify-center w-10 h-10 text-mesh-300 hover:text-mesh-100 transition-colors">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-700 bg-mesh-900/90 backdrop-blur">
-            <div class="px-4 py-4 space-y-2">
-                <a href="blog.html" class="block text-white hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium">Project Updates</a>
-                <a href="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=15&geofence=0&utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Coverage Map</a>
-                <a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">MeshCore</a>
-                <a href="https://meshcolumb.us?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="block text-gray-300 hover:text-mesh-300 transition-colors px-3 py-2 text-sm font-medium" target="_blank" rel="noopener noreferrer">Central Ohio Mesh</a>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation (rendered by components.js) -->
+    <div id="nav-component"></div>
 
     <!-- Hero Section -->
     <div class="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
@@ -178,7 +135,7 @@
             </p>
             
             <div class="flex justify-center gap-4">
-                <a href="#start" class="px-8 py-3 rounded-lg bg-white text-mesh-900 font-bold hover:bg-mesh-300 active:bg-mesh-500 active:text-white transition-all hover:shadow-xl shadow-white/50 hover:scale-105 active:scale-95 cursor-pointer duration-150">
+                <a href="page.html?page=getting-started" class="px-8 py-3 rounded-lg bg-white text-mesh-900 font-bold hover:bg-mesh-300 active:bg-mesh-500 active:text-white transition-all hover:shadow-xl shadow-white/50 hover:scale-105 active:scale-95 cursor-pointer duration-150">
                     Get Started
                 </a>
                 <a href="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=15&geofence=0&utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="px-8 py-3 rounded-lg border-2 border-slate-600 text-white hover:bg-mesh-500 hover:border-mesh-500 active:bg-mesh-600 active:border-mesh-600 transition-all hover:shadow-xl hover:text-white hover:scale-105 active:scale-95 cursor-pointer duration-150">
@@ -222,15 +179,19 @@
                 <!-- Section: About -->
                 <section>
                     <h2 class="text-2xl font-bold text-white mb-4 flex items-center">
-                        <i class="fa-solid fa-circle-nodes text-mesh-500 mr-3"></i> What is this project?
+                        <i class="fa-solid fa-circle-nodes text-mesh-500 mr-3"></i> What is the BexleyMesh Project?
                     </h2>
-                    <div class="prose prose-invert prose-lg text-slate-300">
+                    <div class="prose prose-invert prose-lg text-slate-100">
                         <p>
-                            We are deploying a mesh network in the Bexley area. 
-                            Using low-power, long-range LoRa radios running the 
-                            <a href="#" class="text-mesh-400 hover:underline">MeshCore</a> firmware, 
-                            we enable text communication and GPS location sharing without reliance on 
-                            cellular towers or the internet.
+                            BexleyMesh is a community-built, off-grid communication network for the Bexley, Ohio area.
+                            We use affordable, low-power LoRa radios running <a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="text-mesh-300 hover:underline" target="_blank" rel="noopener noreferrer">MeshCore</a> 
+                            firmware to send text messages and share GPS locations — no cell towers, no internet, 100% free of cost.
+                        </p>
+                        <p class="text-slate-200">
+                            Our solar-powered repeater nodes relay messages across the area automatically, creating a resilient 
+                            mesh that keeps working when traditional infrastructure goes down. Whether you're preparing for 
+                            emergencies, exploring radio technology, or just want to stay connected off-grid — 
+                            <a href="page.html?page=getting-started" class="text-mesh-300 hover:underline">getting started</a> takes only a few minutes.
                         </p>
                     </div>
                 </section>
@@ -322,90 +283,18 @@
                     </div>
                 </div>
 
-                <!-- Resources Links -->
-                <div class="bg-mesh-card rounded-xl p-6 border border-slate-800">
-                    <h3 class="font-bold text-white mb-4">Resources</h3>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="https://flasher.meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
-                                <div class="w-8 flex justify-center shrink-0 mr-2">
-                                    <i class="fa-solid fa-code"></i>
-                                </div>
-                                <span>Firmware Flasher</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.com/channels/1280671076644425749/1280693593002082436" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
-                                <div class="w-8 flex justify-center shrink-0 mr-2">
-                                    <i class="fa-brands fa-discord"></i>
-                                </div>
-                                <span>Join Discord</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
-                                <div class="w-8 flex justify-center shrink-0 mr-2">
-                                    <i class="fa-solid fa-book"></i>
-                                </div>
-                                <span>Documentation</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- Resources (rendered by components.js) -->
+                <div id="resources-component"></div>
             </aside>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 bg-mesh-dark pt-12 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div class="col-span-1 md:col-span-2">
-                    <span class="font-bold text-xl text-white tracking-tight"><span class="text-mesh-500">BexleyMesh</span> Community Network</span>
-                    <p class="mt-4 text-slate-500 text-sm max-w-xs">
-                        A community project dedicated to building off-grid communication infrastructure for emergency response and hobbyist exploration.
-                    </p>
-                </div>
-                <div class="md:col-start-4 md:text-right">
-                    <h4 class="text-white font-bold mb-4">Sitemap</h4>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="blog.html" class="hover:text-white transition-colors">Project Updates</a></li>
-                        <li><a href="https://cmh.meshmapper.net?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Coverage Map <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
-                        <li><a href="https://meshcolumb.us?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Central Ohio Mesh <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
-                        <li><a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Meshcore <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-slate-600 text-xs">© 2026 Bexley Mesh Community Deployment. Open Source.</p>
-                <div class="flex space-x-4 mt-4 md:mt-0">
-                    <a href="https://github.com/DavidJayMartin/BexleyMesh" class="text-slate-600 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer" title="Visit our GitHub"><i class="fa-brands fa-github"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer (rendered by components.js) -->
+    <div id="footer-component"></div>
 
     <!-- Scripts -->
+    <script src="js/components.js"></script>
     <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Close menu when a link is clicked
-        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
         // Determine network status label and color from health percentage
         function getNetworkStatus(healthPercentage, onlineNodes, totalNodes) {
             if (totalNodes === 0 || onlineNodes === 0) {

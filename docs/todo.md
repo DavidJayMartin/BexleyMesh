@@ -12,16 +12,16 @@
   - Average Signal Strength
   - Count of unique companions on the network on the past 30 days
 
-[ ] Task 2.0 - Create reusable code blocks for the Navigation, Resource Links, and Footer sections.  Update the index.html, blog.html, and post.html pages to use the reusable blocks.
+[ ] Task 2.0 - Create reusable code blocks for the Navigation, Resource Links, and Footer sections.  Update the index.html, blog.html, and post.html pages to use the reusable blocks.  **DONE** - Created js/components.js with renderNavigation(), renderResources(), renderFooter(). All pages updated.
 
-[ ] Task 3.0 - Create a template for non-blog post pages
-[ ] Task 3.1 - Update the getting-started.md file to use the new page template. Link the  Getting Started button in the hero section on the home page to the Getting Started page.
-[ ] Task 3.2 - Create an About Us page
-[ ] Task 3.3 - Remove the Central Ohio Mesh and Meshcore links from the Navigation and add them to the to the Resources panel
-[ ] Task 3.3 - Add links to the Gettings Started and About Us pages to the Navigation
+[ ] Task 3.0 - Create a template for non-blog post pages  **DONE** - Created page.html that loads markdown from docs/ folder.
+[ ] Task 3.1 - Update the getting-started.md file to use the new page template. Link the  Getting Started button in the hero section on the home page to the Getting Started page.  **DONE** - Hero button links to page.html?page=getting-started
+[ ] Task 3.2 - Create an About Us page  **DONE** - Created docs/about.md
+[ ] Task 3.3 - Remove the Central Ohio Mesh and Meshcore links from the Navigation and add them to the to the Resources panel  **DONE**
+[ ] Task 3.3 - Add links to the Gettings Started and About Us pages to the Navigation  **DONE**
 
-[ ] Task 4.0 - Rewrite the "What is this project? blub and give the text higher contrast
+[ ] Task 4.0 - Rewrite the "What is this project? blub and give the text higher contrast  **DONE** - Expanded blurb with two paragraphs, changed text classes to text-slate-100/text-slate-200
 
-[ ] Task 5.0 - Move Join Discord button to the hamburger menu when the  screen width is < 1024 pixels
+[ ] Task 5.0 - Move Join Discord button to the hamburger menu when the  screen width is < 1024 pixels  **DONE** - Discord button hidden below lg, added to mobile menu. Hamburger visible on all sub-lg screens.
 
-[ ] Task 6.0 - Set width of the Main Center section in the post.html to match the width of all the other content
+[ ] Task 6.0 - Set width of the Main Center section in the post.html to match the width of all the other content  **DONE** - Changed max-w-4xl to max-w-7xl
