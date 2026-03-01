@@ -196,41 +196,16 @@
                     </div>
                 </section>
 
-                <!-- Section: Recent Updates (Jekyll Loop Example) -->
+                <!-- Section: Recent Updates -->
                 <section>
                     <h3 class="text-xl font-bold text-white mb-6 border-b border-slate-800 pb-2">Latest Updates</h3>
                     
-                    <!-- Post Card 1 -->
-                    <article class="bg-mesh-card rounded-xl p-6 border border-slate-800 hover:border-mesh-500/50 transition-colors mb-6 group">
-                        <div class="flex items-center text-xs text-mesh-400 mb-2 font-mono">
-                            <span>Feb 14, 2026</span>
-                            <span class="mx-2">•</span>
-                            <span>Hardware</span>
+                    <!-- Recent posts container (loaded by JavaScript) -->
+                    <div id="recent-posts-container" class="space-y-6">
+                        <div class="text-center py-12">
+                            <p class="text-slate-400">Loading posts...</p>
                         </div>
-                        <h4 class="text-xl font-bold text-white group-hover:text-mesh-300 transition-colors mb-2">
-                            <a href="post.html?slug=2026-02-14-solar-repeater">New Solar Repeater Deployed on North Ridge</a>
-                        </h4>
-                        <p class="text-slate-400 text-sm mb-4">
-                            We've successfully installed a Rak19007 based solar node at the highest point in the county. Coverage tests show connectivity extending 15km south.
-                        </p>
-                        <a href="post.html?slug=2026-02-14-solar-repeater" class="text-sm font-semibold text-mesh-500 hover:text-mesh-300">Read Update &rarr;</a>
-                    </article>
-
-                    <!-- Post Card 2 -->
-                    <article class="bg-mesh-card rounded-xl p-6 border border-slate-800 hover:border-mesh-500/50 transition-colors group">
-                        <div class="flex items-center text-xs text-mesh-400 mb-2 font-mono">
-                            <span>Feb 10, 2026</span>
-                            <span class="mx-2">•</span>
-                            <span>Guide</span>
-                        </div>
-                        <h4 class="text-xl font-bold text-white group-hover:text-mesh-300 transition-colors mb-2">
-                            <a href="post.html?slug=2026-02-10-getting-started">Getting Started with Meshcore Agents</a>
-                        </h4>
-                        <p class="text-slate-400 text-sm mb-4">
-                            A step-by-step guide to configuring your first agent and connecting to the local MQTT broker for hybrid connectivity.
-                        </p>
-                        <a href="post.html?slug=2026-02-10-getting-started" class="text-sm font-semibold text-mesh-500 hover:text-mesh-300">Read Guide &rarr;</a>
-                    </article>
+                    </div>
 
                     <!-- View All Posts Link -->
                     <div class="text-center mt-8">
@@ -294,6 +269,7 @@
 
     <!-- Scripts -->
     <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
     <script>
         // Determine network status label and color from health percentage
         function getNetworkStatus(healthPercentage, onlineNodes, totalNodes) {
@@ -388,7 +364,29 @@
         }
 
         // Load status when page loads
-        document.addEventListener('DOMContentLoaded', loadNetworkStatus);
+        async function loadRecentPosts() {
+            try {
+                await blogManager.loadPosts();
+                const recentPosts = blogManager.getPosts(1).slice(0, 3); // Get first 3 posts (most recent)
+                
+                if (recentPosts.length === 0) {
+                    document.getElementById('recent-posts-container').innerHTML = 
+                        '<div class="text-slate-400 text-sm">No posts available</div>';
+                    return;
+                }
+                
+                renderBlogListing(recentPosts, document.getElementById('recent-posts-container'));
+            } catch (error) {
+                console.error('Failed to load recent posts:', error);
+                document.getElementById('recent-posts-container').innerHTML = 
+                    '<div class="text-slate-400 text-sm">Unable to load posts</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNetworkStatus();
+            loadRecentPosts();
+        });
         
         // Refresh every 30 seconds
         setInterval(loadNetworkStatus, 30000);

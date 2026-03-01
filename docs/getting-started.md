@@ -50,7 +50,7 @@ The following devices are confirmed compatible with MeshCore:
 
 ## Next Steps
 
-- Read the [Getting Started Guide Blog Post](post.html?slug=2026-02-10-getting-started) for detailed setup
+- Read the [Getting Started Guide Blog Post](post.html?post=2026-02-10-getting-started) for detailed setup
 - Join the [Discord community](https://discord.com/channels/1280671076644425749/1280693593002082436)
 - Check out the [Coverage Map](https://meshcolumb.us/)
 
