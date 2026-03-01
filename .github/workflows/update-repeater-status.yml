@@ -38,7 +38,8 @@ jobs:
       - name: Check if repeater-status.json changed
         id: check_changes
         run: |
-          if git diff --quiet data/repeater-status.json; then
+          git add data/repeater-status.json data/repeater-status.json.bak
+          if git diff --cached --quiet data/repeater-status.json; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -49,7 +50,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/repeater-status.json
           git commit -m "chore: Update repeater status data - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           git push
       

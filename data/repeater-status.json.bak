@@ -1,5 +1,6 @@
 {
-  "lastUpdated": "2026-02-28T23:55:08.271233+00:00",
+<<<<<<< HEAD
+  "lastUpdated": "2026-03-01T00:00:27.452118+00:00",
   "totalNodes": 3,
   "onlineNodes": 2,
   "offlineNodes": 1,
@@ -8,7 +9,16 @@
   "averageSignal": -65.4,
   "averageSNR": 8.1,
   "companionCount": 3,
-  "messageCount": 705,
+  "messageCount": 522,
+=======
+  "lastUpdated": "2026-02-28T23:56:06.587379+00:00",
+  "totalNodes": 2,
+  "onlineNodes": 1,
+  "offlineNodes": 1,
+  "healthPercentage": 50.0,
+  "networkHealth": "fair",
+  "averageSignal": -80.5,
+>>>>>>> df388ec94c8d22ca2eeaed863b5fd245b9ab0216
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -20,6 +30,7 @@
         "longitude": -82.925051,
         "address": ""
       },
+<<<<<<< HEAD
       "lastSeen": "2026-02-28T23:37:35.005Z",
       "signalStrength": -113,
       "signalPercentage": 5.8,
@@ -50,6 +61,11 @@
       "averageRSSI": -47.8,
       "averageRSSIPercentage": 60.2,
       "activityPacketCount": 45,
+=======
+      "lastSeen": "2026-02-28T23:00:31.347Z",
+      "signalStrength": -113,
+      "signalPercentage": 5.8,
+>>>>>>> df388ec94c8d22ca2eeaed863b5fd245b9ab0216
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -59,7 +75,7 @@
     {
       "id": "node-cc540240baf2",
       "name": "TJ00",
-      "status": "online",
+      "status": "offline",
       "publicKey": "CC540240BAF29FF141A5F70D87622C3716B6E810AF1097E80D4D2A442E1414E4",
       "location": {
         "latitude": 39.96003,
