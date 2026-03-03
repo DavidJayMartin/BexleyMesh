@@ -2,3 +2,4 @@
 [ ] Write Getting Started Page
 [ ] Write About Us Page
 [ ] Write Article - Why I started exploring Meshcore
+[ ] Write Article - First repeater build

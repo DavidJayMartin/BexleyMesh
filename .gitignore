@@ -26,6 +26,7 @@ env/
 
 # Generated Files
 data/repeater-status.json
+data/repeater-status.json.bak
 
 
 # Logs
