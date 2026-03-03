@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-03T01:47:17.613983+00:00",
+  "lastUpdated": "2026-03-03T01:59:23.987905+00:00",
   "totalNodes": 2,
   "onlineNodes": 2,
   "offlineNodes": 0,
@@ -8,7 +8,7 @@
   "averageSignal": -74.7,
   "averageSNR": 6.5,
   "companionCount": 2,
-  "messageCount": 592,
+  "messageCount": 590,
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -26,7 +26,7 @@
       "averageSNR": 10.0,
       "averageRSSI": -59.5,
       "averageRSSIPercentage": 50.4,
-      "activityPacketCount": 1275,
+      "activityPacketCount": 1272,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
