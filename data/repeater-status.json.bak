@@ -1,22 +1,19 @@
 {
 <<<<<<< HEAD
-  "lastUpdated": "2026-03-01T00:07:15.148630+00:00",
+  "lastUpdated": "2026-03-01T14:32:50.134590+00:00",
+  "totalNodes": 2,
 =======
-  "lastUpdated": "2026-03-01T14:27:53.252564+00:00",
->>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
+  "lastUpdated": "2026-03-01T14:50:27.017532+00:00",
   "totalNodes": 3,
-  "onlineNodes": 2,
-  "offlineNodes": 1,
-  "healthPercentage": 66.7,
-  "networkHealth": "fair",
-  "averageSignal": -65.4,
-  "averageSNR": 8.1,
-  "companionCount": 3,
-<<<<<<< HEAD
-  "messageCount": 522,
-=======
-  "messageCount": 523,
 >>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
+  "onlineNodes": 2,
+  "offlineNodes": 0,
+  "healthPercentage": 100.0,
+  "networkHealth": "excellent",
+  "averageSignal": -74.2,
+  "averageSNR": 6.6,
+  "companionCount": 3,
+  "messageCount": 523,
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -29,14 +26,6 @@
         "address": ""
       },
 <<<<<<< HEAD
-      "lastSeen": "2026-03-01T00:00:30.756Z",
-      "signalStrength": -54,
-      "signalPercentage": 55.0,
-      "averageSNR": 9.8,
-      "averageRSSI": -60.4,
-      "averageRSSIPercentage": 49.7,
-      "activityPacketCount": 1004,
-=======
       "lastSeen": "2026-03-01T14:00:32.058Z",
       "signalStrength": -51,
       "signalPercentage": 57.5,
@@ -44,7 +33,14 @@
       "averageRSSI": -60.3,
       "averageRSSIPercentage": 49.8,
       "activityPacketCount": 1028,
->>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
+=======
+      "lastSeen": "2026-03-01T14:37:21.878Z",
+      "signalStrength": -51,
+      "signalPercentage": 57.5,
+      "averageSNR": 9.8,
+      "averageRSSI": -60.4,
+      "averageRSSIPercentage": 49.7,
+      "activityPacketCount": 1030,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -68,6 +64,7 @@
       "averageRSSI": -47.8,
       "averageRSSIPercentage": 60.2,
       "activityPacketCount": 45,
+>>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -84,6 +81,7 @@
         "longitude": -82.92721,
         "address": ""
       },
+<<<<<<< HEAD
       "lastSeen": "2026-03-01T11:41:20.064Z",
       "signalStrength": -51,
       "signalPercentage": 57.5,
@@ -91,6 +89,15 @@
       "averageRSSI": -88.0,
       "averageRSSIPercentage": 26.7,
       "activityPacketCount": 405,
+=======
+      "lastSeen": "2026-03-01T14:37:21.878Z",
+      "signalStrength": -51,
+      "signalPercentage": 57.5,
+      "averageSNR": 3.3,
+      "averageRSSI": -88.1,
+      "averageRSSIPercentage": 26.6,
+      "activityPacketCount": 406,
+>>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
