@@ -1,19 +1,31 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "lastUpdated": "2026-03-01T14:32:50.134590+00:00",
   "totalNodes": 2,
 =======
   "lastUpdated": "2026-03-01T14:50:27.017532+00:00",
   "totalNodes": 3,
 >>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
+=======
+  "lastUpdated": "2026-03-02T23:24:31.187305+00:00",
+  "totalNodes": 2,
+>>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
   "onlineNodes": 2,
   "offlineNodes": 0,
   "healthPercentage": 100.0,
   "networkHealth": "excellent",
+<<<<<<< HEAD
   "averageSignal": -74.2,
   "averageSNR": 6.6,
   "companionCount": 3,
   "messageCount": 523,
+=======
+  "averageSignal": -74.8,
+  "averageSNR": 6.5,
+  "companionCount": 2,
+  "messageCount": 592,
+>>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -25,6 +37,7 @@
         "longitude": -82.925051,
         "address": ""
       },
+<<<<<<< HEAD
 <<<<<<< HEAD
       "lastSeen": "2026-03-01T14:00:32.058Z",
       "signalStrength": -51,
@@ -65,6 +78,15 @@
       "averageRSSIPercentage": 60.2,
       "activityPacketCount": 45,
 >>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
+=======
+      "lastSeen": "2026-03-02T23:00:35.374Z",
+      "signalStrength": -48,
+      "signalPercentage": 60.0,
+      "averageSNR": 10.0,
+      "averageRSSI": -59.5,
+      "averageRSSIPercentage": 50.4,
+      "activityPacketCount": 1272,
+>>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -82,6 +104,7 @@
         "address": ""
       },
 <<<<<<< HEAD
+<<<<<<< HEAD
       "lastSeen": "2026-03-01T11:41:20.064Z",
       "signalStrength": -51,
       "signalPercentage": 57.5,
@@ -98,6 +121,15 @@
       "averageRSSIPercentage": 26.6,
       "activityPacketCount": 406,
 >>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
+=======
+      "lastSeen": "2026-03-02T21:37:31.879Z",
+      "signalStrength": -47,
+      "signalPercentage": 60.8,
+      "averageSNR": 3.0,
+      "averageRSSI": -90.0,
+      "averageRSSIPercentage": 25.0,
+      "activityPacketCount": 508,
+>>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",

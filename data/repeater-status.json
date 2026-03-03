@@ -1,0 +1,60 @@
+{
+  "lastUpdated": "2026-03-02T23:50:01.407607+00:00",
+  "totalNodes": 2,
+  "onlineNodes": 2,
+  "offlineNodes": 0,
+  "healthPercentage": 100.0,
+  "networkHealth": "excellent",
+  "averageSignal": -74.8,
+  "averageSNR": 6.5,
+  "companionCount": 2,
+  "messageCount": 592,
+  "nodes": [
+    {
+      "id": "node-0d99036fdf51",
+      "name": "BexleyMesh\u2600\ufe0f\u267b\ufe0f",
+      "status": "online",
+      "publicKey": "0D99036FDF510A790C2FC9257CA41ED132AB5FF35288927F61CD8EF45D2F0EC7",
+      "location": {
+        "latitude": 39.967323,
+        "longitude": -82.925051,
+        "address": ""
+      },
+      "lastSeen": "2026-03-02T23:00:35.374Z",
+      "signalStrength": -48,
+      "signalPercentage": 60.0,
+      "averageSNR": 10.0,
+      "averageRSSI": -59.5,
+      "averageRSSIPercentage": 50.4,
+      "activityPacketCount": 1272,
+      "batteryLevel": null,
+      "uptime": null,
+      "hardware": "Unknown",
+      "firmware": "Unknown",
+      "role": "Repeater"
+    },
+    {
+      "id": "node-cc540240baf2",
+      "name": "TJ00",
+      "status": "online",
+      "publicKey": "CC540240BAF29FF141A5F70D87622C3716B6E810AF1097E80D4D2A442E1414E4",
+      "location": {
+        "latitude": 39.96003,
+        "longitude": -82.92721,
+        "address": ""
+      },
+      "lastSeen": "2026-03-02T21:37:31.879Z",
+      "signalStrength": -47,
+      "signalPercentage": 60.8,
+      "averageSNR": 3.0,
+      "averageRSSI": -90.0,
+      "averageRSSIPercentage": 25.0,
+      "activityPacketCount": 508,
+      "batteryLevel": null,
+      "uptime": null,
+      "hardware": "Unknown",
+      "firmware": "Unknown",
+      "role": "Repeater"
+    }
+  ]
+}
