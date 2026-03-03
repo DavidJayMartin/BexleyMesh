@@ -1,9 +1,9 @@
 ---
-title: Getting Started with MeshCore Agents
-date: 2026-02-10
+title: What the heck is Meshcore and why did we start building the network?
+date: 2026-02-13
 author: DavidJay
-tags: Guides, Hardware
-excerpt: A step-by-step guide to configuring your first MeshCore agent and connecting to the local MQTT broker for hybrid connectivity.
+tags: Project Update
+excerpt: I went looking for a way for my kids to communicate with their friends and found a new hobby.
 ---
 
 # Getting Started with MeshCore Agents

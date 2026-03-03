@@ -1,9 +1,9 @@
 ---
-title: New Solar Repeater Deployed on North Ridge
-date: 2026-02-14
+title: Built my first repeater!
+date: 2026-02-16
 author: DavidJay
-tags: Hardware, Announcements
-excerpt: We've successfully installed a Rak19007 based solar node at the highest point in the county. Coverage tests show connectivity extending 15km south.
+tags: Hardware, Project Update
+excerpt: Now that I have some companion devices, I need a repeater to extend their range.
 ---
 
 # New Solar Repeater Deployed on North Ridge
