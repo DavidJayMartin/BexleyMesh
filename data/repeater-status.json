@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-06T20:29:25.890110+00:00",
+  "lastUpdated": "2026-03-06T20:57:38.053265+00:00",
   "totalNodes": 2,
   "onlineNodes": 2,
   "offlineNodes": 0,
@@ -20,7 +20,7 @@
         "longitude": -82.925051,
         "address": ""
       },
-      "lastSeen": "2026-03-06T20:00:40.835Z",
+      "lastSeen": "2026-03-06T20:37:20.386Z",
       "signalStrength": -44,
       "signalPercentage": 63.3,
       "averageSNR": 10.3,
