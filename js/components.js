@@ -104,6 +104,15 @@ function renderResources(containerId) {
                 </a>
             </li>
             <li>
+                <a href="https://cmh.meshmapper.net/?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
+                    <div class="w-8 flex justify-center shrink-0 mr-2">
+                        <i class="fa-solid fa-map"></i>
+                    </div>
+                    <span>Columbus Metro Coverage Map</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>
+                </a>
+            </li>
+            <li>
                 <a href="https://meshcore.co.uk?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink" class="flex items-center text-slate-400 hover:text-mesh-300 transition-colors" target="_blank" rel="noopener noreferrer">
                     <div class="w-8 flex justify-center shrink-0 mr-2">
                         <i class="fa-solid fa-microchip"></i>
