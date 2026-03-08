@@ -1,31 +1,14 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "lastUpdated": "2026-03-01T14:32:50.134590+00:00",
-  "totalNodes": 2,
-=======
-  "lastUpdated": "2026-03-01T14:50:27.017532+00:00",
+  "lastUpdated": "2026-03-08T14:58:17.401276+00:00",
   "totalNodes": 3,
->>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
-=======
-  "lastUpdated": "2026-03-02T23:24:31.187305+00:00",
-  "totalNodes": 2,
->>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
-  "onlineNodes": 2,
-  "offlineNodes": 0,
-  "healthPercentage": 100.0,
-  "networkHealth": "excellent",
-<<<<<<< HEAD
-  "averageSignal": -74.2,
-  "averageSNR": 6.6,
-  "companionCount": 3,
-  "messageCount": 523,
-=======
-  "averageSignal": -74.8,
-  "averageSNR": 6.5,
-  "companionCount": 2,
-  "messageCount": 592,
->>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
+  "onlineNodes": 1,
+  "offlineNodes": 2,
+  "healthPercentage": 33.3,
+  "networkHealth": "poor",
+  "averageSignal": -62.3,
+  "averageSNR": 8.9,
+  "companionCount": 7,
+  "messageCount": 550,
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -37,23 +20,13 @@
         "longitude": -82.925051,
         "address": ""
       },
-<<<<<<< HEAD
-<<<<<<< HEAD
-      "lastSeen": "2026-03-01T14:00:32.058Z",
-      "signalStrength": -51,
-      "signalPercentage": 57.5,
-      "averageSNR": 9.8,
-      "averageRSSI": -60.3,
-      "averageRSSIPercentage": 49.8,
-      "activityPacketCount": 1028,
-=======
-      "lastSeen": "2026-03-01T14:37:21.878Z",
-      "signalStrength": -51,
-      "signalPercentage": 57.5,
-      "averageSNR": 9.8,
-      "averageRSSI": -60.4,
-      "averageRSSIPercentage": 49.7,
-      "activityPacketCount": 1030,
+      "lastSeen": "2026-03-08T14:37:20.656Z",
+      "signalStrength": -47,
+      "signalPercentage": 60.8,
+      "averageSNR": 11.2,
+      "averageRSSI": -50.4,
+      "averageRSSIPercentage": 58.0,
+      "activityPacketCount": 1368,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -61,32 +34,22 @@
       "role": "Repeater"
     },
     {
-      "id": "node-a12d8581f54c",
-      "name": "Repeato",
+      "id": "node-8c3b2bf03af6",
+      "name": "MC Repeater 43201",
       "status": "offline",
-      "publicKey": "A12D8581F54CBC2815BFBC2D32B59AE7F0FDE4D3AE4ABFAFA5E721338122289C",
+      "publicKey": "8C3B2BF03AF6FCECE1F72ED74C8B43F84D57F203C82D6929713852E0E7ED3DAE",
       "location": {
-        "latitude": 39.96885,
-        "longitude": -82.99202,
+        "latitude": 39.987404,
+        "longitude": -82.999094,
         "address": ""
       },
-      "lastSeen": "2026-02-28T19:44:46.949Z",
-      "signalStrength": -59,
-      "signalPercentage": 50.8,
-      "averageSNR": 11.2,
-      "averageRSSI": -47.8,
-      "averageRSSIPercentage": 60.2,
-      "activityPacketCount": 45,
->>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
-=======
-      "lastSeen": "2026-03-02T23:00:35.374Z",
+      "lastSeen": "2026-03-08T00:02:59.819Z",
       "signalStrength": -48,
       "signalPercentage": 60.0,
-      "averageSNR": 10.0,
-      "averageRSSI": -59.5,
-      "averageRSSIPercentage": 50.4,
-      "activityPacketCount": 1272,
->>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
+      "averageSNR": 12.0,
+      "averageRSSI": -48.0,
+      "averageRSSIPercentage": 60.0,
+      "activityPacketCount": 1,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
@@ -96,40 +59,20 @@
     {
       "id": "node-cc540240baf2",
       "name": "TJ00",
-      "status": "online",
+      "status": "offline",
       "publicKey": "CC540240BAF29FF141A5F70D87622C3716B6E810AF1097E80D4D2A442E1414E4",
       "location": {
         "latitude": 39.96003,
         "longitude": -82.92721,
         "address": ""
       },
-<<<<<<< HEAD
-<<<<<<< HEAD
-      "lastSeen": "2026-03-01T11:41:20.064Z",
-      "signalStrength": -51,
-      "signalPercentage": 57.5,
-      "averageSNR": 3.3,
-      "averageRSSI": -88.0,
-      "averageRSSIPercentage": 26.7,
-      "activityPacketCount": 405,
-=======
-      "lastSeen": "2026-03-01T14:37:21.878Z",
-      "signalStrength": -51,
-      "signalPercentage": 57.5,
-      "averageSNR": 3.3,
-      "averageRSSI": -88.1,
-      "averageRSSIPercentage": 26.6,
-      "activityPacketCount": 406,
->>>>>>> 8910d130418b9858baa85455b07ad0cbe00fd6dd
-=======
-      "lastSeen": "2026-03-02T21:37:31.879Z",
-      "signalStrength": -47,
-      "signalPercentage": 60.8,
-      "averageSNR": 3.0,
-      "averageRSSI": -90.0,
-      "averageRSSIPercentage": 25.0,
-      "activityPacketCount": 508,
->>>>>>> bd12bf817883e545b4a8412a7efbafa5c935b801
+      "lastSeen": "2026-03-07T19:01:07.790Z",
+      "signalStrength": -48,
+      "signalPercentage": 60.0,
+      "averageSNR": 3.4,
+      "averageRSSI": -88.5,
+      "averageRSSIPercentage": 26.2,
+      "activityPacketCount": 234,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
