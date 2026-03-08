@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-08T07:58:52.925220+00:00",
+  "lastUpdated": "2026-03-08T08:40:48.115724+00:00",
   "totalNodes": 3,
   "onlineNodes": 1,
   "offlineNodes": 2,
@@ -8,7 +8,7 @@
   "averageSignal": -62.3,
   "averageSNR": 8.9,
   "companionCount": 7,
-  "messageCount": 552,
+  "messageCount": 550,
   "nodes": [
     {
       "id": "node-0d99036fdf51",
@@ -20,7 +20,7 @@
         "longitude": -82.925051,
         "address": ""
       },
-      "lastSeen": "2026-03-08T07:00:42.220Z",
+      "lastSeen": "2026-03-08T08:37:20.823Z",
       "signalStrength": -46,
       "signalPercentage": 61.7,
       "averageSNR": 11.2,
@@ -70,9 +70,9 @@
       "signalStrength": -48,
       "signalPercentage": 60.0,
       "averageSNR": 3.4,
-      "averageRSSI": -88.3,
-      "averageRSSIPercentage": 26.4,
-      "activityPacketCount": 240,
+      "averageRSSI": -88.5,
+      "averageRSSIPercentage": 26.2,
+      "activityPacketCount": 239,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
