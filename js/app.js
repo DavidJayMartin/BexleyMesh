@@ -45,6 +45,9 @@ class MarkdownParser {
     static parse(markdown) {
         let html = markdown;
 
+        // Normalize line endings
+        html = html.replace(/\r\n/g, '\n');
+
         // Code blocks (must be before inline code)
         html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
             const escaped = code.replace(/&/g, '&amp;')
@@ -72,13 +75,23 @@ class MarkdownParser {
         html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
         html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
 
-        // Lists
-        html = html.replace(/^\* (.*?)$/gm, '<li>$1</li>');
-        html = html.replace(/^- (.*?)$/gm, '<li>$1</li>');
-        html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+        // Unordered Lists - group consecutive lines starting with * or -
+        html = html.replace(/((?:^ *[*-] .*(?:\n|$))+)/gm, (match) => {
+            const items = match.trim().split('\n').map(line => {
+                return '<li>' + line.replace(/^ *[*-] /, '') + '</li>';
+            }).join('\n');
+            return '<ul>\n' + items + '\n</ul>';
+        });
 
-        // Numbered lists
-        html = html.replace(/^\d+\. (.*?)$/gm, '<li>$1</li>');
+        // Ordered Lists - group consecutive lines starting with numbers
+        html = html.replace(/((?:^ *\d+\. .*(?:\n|$))+)/gm, (match) => {
+            const items = match.trim().split('\n').map(line => {
+                const num = line.match(/^ *(\d+)\. /);
+                const value = num ? ` value="${num[1]}"` : '';
+                return '<li' + value + '>' + line.replace(/^ *\d+\. /, '') + '</li>';
+            }).join('\n');
+            return '<ol>\n' + items + '\n</ol>';
+        });
 
         // Paragraphs
         html = html.split('\n\n').map(para => {

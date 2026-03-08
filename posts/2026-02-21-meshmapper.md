@@ -1,9 +1,9 @@
 ---
-title: Welcome to BexleyMesh
-date: 2026-02-07
+title: MeshMapper for Central Ohio is Live
+date: 2026-02-21
 author: DavidJay
 tags: Announcements
-excerpt: An introduction to the BexleyMesh project, our vision for off-grid communications, and how you can get involved.
+excerpt: I've activated the CMH region in MeshMapper to allow us to map Meshcore network coverage in Central Ohio.
 ---
 
 # Welcome to BexleyMesh
