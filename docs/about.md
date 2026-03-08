@@ -1,3 +1,8 @@
+---
+title: About Us
+subtitle: Who is BexleyMesh and what do we hope to achieve
+---
+
 # About BexleyMesh
 
 BexleyMesh is a community-driven project dedicated to building a resilient, off-grid mesh communication network in the Bexley, Ohio area. Using low-power, long-range LoRa radios running the MeshCore firmware, we enable text communication and GPS location sharing without reliance on cellular towers or the internet.

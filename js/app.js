@@ -75,22 +75,10 @@ class MarkdownParser {
         html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
         html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
 
-        // Unordered Lists - group consecutive lines starting with * or -
-        html = html.replace(/((?:^ *[*-] .*(?:\n|$))+)/gm, (match) => {
-            const items = match.trim().split('\n').map(line => {
-                return '<li>' + line.replace(/^ *[*-] /, '') + '</li>';
-            }).join('\n');
-            return '<ul>\n' + items + '\n</ul>';
-        });
-
-        // Ordered Lists - group consecutive lines starting with numbers
-        html = html.replace(/((?:^ *\d+\. .*(?:\n|$))+)/gm, (match) => {
-            const items = match.trim().split('\n').map(line => {
-                const num = line.match(/^ *(\d+)\. /);
-                const value = num ? ` value="${num[1]}"` : '';
-                return '<li' + value + '>' + line.replace(/^ *\d+\. /, '') + '</li>';
-            }).join('\n');
-            return '<ol>\n' + items + '\n</ol>';
+        // Lists - group consecutive lines starting with list markers (ordered or unordered)
+        html = html.replace(/((?:^ *(?:[*-]|\d+\.) .*(?:\n|$))+)/gm, (match) => {
+            const lines = match.trimEnd().split('\n').filter(l => l.trim());
+            return this.parseListBlock(lines);
         });
 
         // Paragraphs
@@ -109,6 +97,58 @@ class MarkdownParser {
         // Horizontal rules
         html = html.replace(/^---$/gm, '<hr />');
 
+        return html;
+    }
+
+    /**
+     * Recursively parse a block of list lines into nested HTML lists.
+     */
+    static parseListBlock(lines) {
+        if (lines.length === 0) return '';
+
+        // Find the minimum indentation level in this set of lines
+        const baseIndent = Math.min(...lines.map(l => l.match(/^( *)/)[1].length));
+
+        // Determine list type from the first item at base indent
+        const firstBaseLine = lines.find(l => l.match(/^( *)/)[1].length === baseIndent);
+        const isOrderedList = /^ *\d+\. /.test(firstBaseLine);
+        const tag = isOrderedList ? 'ol' : 'ul';
+
+        let html = `<${tag}>\n`;
+        let i = 0;
+
+        while (i < lines.length) {
+            const line = lines[i];
+            const indent = line.match(/^( *)/)[1].length;
+
+            if (indent === baseIndent) {
+                const isOrdered = /^ *\d+\. /.test(line);
+                const content = isOrdered
+                    ? line.replace(/^ *\d+\. /, '')
+                    : line.replace(/^ *[*-] /, '');
+                const valueAttr = isOrdered ? ` value="${line.match(/^ *(\d+)\. /)[1]}"` : '';
+
+                // Collect children (subsequent lines with greater indent)
+                let children = [];
+                let j = i + 1;
+                while (j < lines.length && lines[j].match(/^( *)/)[1].length > baseIndent) {
+                    children.push(lines[j]);
+                    j++;
+                }
+
+                if (children.length > 0) {
+                    html += `<li${valueAttr}>${content}\n${this.parseListBlock(children)}</li>\n`;
+                } else {
+                    html += `<li${valueAttr}>${content}</li>\n`;
+                }
+
+                i = j;
+            } else {
+                i++;
+            }
+        }
+
+        html += `</${tag}>`;
         return html;
     }
 }

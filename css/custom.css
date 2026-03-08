@@ -136,6 +136,11 @@ code, pre {
     padding-left: 1.5rem;
 }
 
+.prose ul ul, .prose ul ol, .prose ol ul, .prose ol ol {
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+}
+
 .prose ul {
     list-style-type: disc;
 }
