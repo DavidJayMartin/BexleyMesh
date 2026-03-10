@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-03-10T10:07:23.763010+00:00",
+  "lastUpdated": "2026-03-10T11:00:37.272896+00:00",
   "totalNodes": 4,
-  "onlineNodes": 2,
-  "offlineNodes": 2,
-  "healthPercentage": 50.0,
-  "networkHealth": "fair",
+  "onlineNodes": 1,
+  "offlineNodes": 3,
+  "healthPercentage": 25.0,
+  "networkHealth": "poor",
   "averageSignal": -56.0,
   "averageSNR": 10.0,
   "companionCount": 6,
@@ -82,7 +82,7 @@
     {
       "id": "node-cc540240baf2",
       "name": "TJ00",
-      "status": "online",
+      "status": "offline",
       "publicKey": "CC540240BAF29FF141A5F70D87622C3716B6E810AF1097E80D4D2A442E1414E4",
       "location": {
         "latitude": 39.96003,
