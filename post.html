@@ -171,8 +171,8 @@
 
             // Render navigation
             const currentIndex = blogManager.posts.indexOf(post);
-            const prevPost = currentIndex > 0 ? blogManager.posts[currentIndex - 1] : null;
-            const nextPost = currentIndex < blogManager.posts.length - 1 ? blogManager.posts[currentIndex + 1] : null;
+            const prevPost = currentIndex < blogManager.posts.length - 1 ? blogManager.posts[currentIndex + 1] : null;
+            const nextPost = currentIndex > 0 ? blogManager.posts[currentIndex - 1] : null;
 
             let navHtml = '';
             if (prevPost) {

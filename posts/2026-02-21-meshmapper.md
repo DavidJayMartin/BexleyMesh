@@ -14,7 +14,7 @@ It answers critical questions for mesh operators:
  - "Which repeater is providing the best coverage?"
  - "Where are the dead zones in our city?"
 
-The map you see on our Home Page is pulled from MeshMapper and it has been an incredabily valuable resource as we develop the network in Bexley.
+The map you see on our Home Page is pulled from MeshMapper and it has been an incredibly valuable resource as we develop the network in Bexley.
 
 <iframe 
     src="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=12&geofence=0" 

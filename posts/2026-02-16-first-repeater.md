@@ -7,15 +7,15 @@ excerpt: Now that I have some companion devices, I need a repeater to extend the
 ---
 
 # Why do we need a repeater?
-If mesh networks are designed to allow direct communications without the need for a centralized distribution network, why do we need to build a repeater?  If we had selected a different protocol like Meshtastic, we wouldn't have needed a repeater.  One of the major problems with the Mestasitic approach is the overloading of the network with traffic because every device repeaters every message.  This issue has lead to dropped message and unreliability of Mestastic networks as they grow.  Meshcore avoids this issue by relying on a network of repeaters to handle the "flood" transmissions while still allowing for direct communications between individuals if they are within range.
+If mesh networks are designed to allow direct communications without the need for a centralized distribution network, why do we need to build a repeater?  If we had selected a different protocol like Meshtastic, we wouldn't have needed a repeater.  One of the major problems with the Meshtastic approach is the overloading of the network with traffic because every device repeats every message.  This issue has led to dropped messages and unreliability of Meshtastic networks as they grow.  Meshcore avoids this issue by relying on a network of repeaters to handle the "flood" transmissions while still allowing for direct communications between individuals if they are within range.
 
 Another benefit of a repeater is that you can place it in a static location, which preferably is as high as you can get it.  This strategic placement of repeaters provides better coverage around the repeater for the individual users while also helping to integrate the local network with other repeaters further away.
 
 # Hardware
-Please do not take the following as a guide for building your own repeater.  While I have some experience with eletronics, I am a total noob when it comes to RF.  The repeater has been working really well since I built it and I think what I built would be a good first repeater for someone looking to learn the tech, but I definitely have some lessons learned that I outline at the bottom of this post and I hope to implement them on my next build as I continue to learn.
+Please do not take the following as a guide for building your own repeater.  While I have some experience with electronics, I am a total noob when it comes to RF.  The repeater has been working really well since I built it and I think what I built would be a good first repeater for someone looking to learn the tech, but I definitely have some lessons learned that I outline at the bottom of this post and I hope to implement them on my next build as I continue to learn.
 
 ## LoRa Board 
-I chose this board because of it's low power consumption and
+I chose this board because of its low power consumption and
   - [WisBlock RAK19007 + RAK4631](https://www.amazon.com/dp/B0CHKZJK9C) 
 
 ## Antenna
@@ -42,7 +42,7 @@ When I first built the repeater, I stuck it on the 10' conduit in my yard.  I wa
 ![Results from the ground position](posts\photos\v1-results-before.png)
 ![Results from mounting it to the roof](posts\photos\v1-results-after.png)
 
-At the LoRa frequencies, the devices rely on line of sight to transmit their messages.  You get some benefit from the RF bouncing around the environment to extend the range past true line of sight, but every bounce takes energy out of the signal.  YOu really extend the range, you need to get the antenna as high as you can.  Preferrably above the tree line.  Here is the final installation.
+At the LoRa frequencies, the devices rely on line of sight to transmit their messages.  You get some benefit from the RF bouncing around the environment to extend the range past true line of sight, but every bounce takes energy out of the signal.  To really extend the range, you need to get the antenna as high as you can.  Preferably above the tree line.  Here is the final installation.
 
 ![](posts\photos\antenna-mast-v1-1.jpg)
 ![](posts\photos\antenna-mast-v1-2.jpg)
