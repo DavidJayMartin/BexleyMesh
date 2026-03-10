@@ -6,65 +6,33 @@ tags: Announcements
 excerpt: I've activated the CMH region in MeshMapper to allow us to map Meshcore network coverage in Central Ohio.
 ---
 
-# Welcome to BexleyMesh
+# What is MeshMapper
+[MeshMapper](https://cmh.meshmapper.net/) is a community-driven visualization and analytics platform designed for the MeshCore LoRa mesh network. It provides real-time mapping of network coverage and repeater performance, helping communities build more robust and efficient mesh networks.  At its core, MeshMapper is a web-based map that aggregates data collected by users "wardriving" (or "warwalking", etc.) their local area. Unlike simple node maps that just show where a device is, MeshMapper visualizes actual RF coverage.
 
-We're thrilled to launch the BexleyMesh community network project! This website serves as the central hub for information about our initiative to build a resilient, off-grid mesh communication network in Bexley, Ohio.
+It answers critical questions for mesh operators:
+ - "Can I reach the mesh from here?"
+ - "Which repeater is providing the best coverage?"
+ - "Where are the dead zones in our city?"
 
-## What is BexleyMesh?
+The map you see on our Home Page is pulled from MeshMapper and it has been an incredabily valuable resource as we develop the network in Bexley.
 
-BexleyMesh is a community-driven project to deploy a mesh network using low-power, long-range LoRa radio technology. Unlike traditional communication infrastructure that depends on cellular networks or the internet, a mesh network allows devices to communicate directly with each other, with the ability to relay messages across larger distances through multiple nodes.
+<iframe 
+    src="https://cmh.meshmapper.net/embed.php?lat=39.9638200178056&lon=-82.92957200523269&zoom=12&geofence=0" 
+    width="100%" 
+    height="400px"
+    frameborder="0" 
+    style="border:0; border-radius: 0;" 
+    allowfullscreen="" 
+    aria-hidden="false" 
+    tabindex="0">
+</iframe>
 
-## Why This Matters
+# What is Wardriving
+[Wardriving](https://en.wikipedia.org/wiki/Wardriving) originated from wardialing, a method popularized by a character played by Matthew Broderick in the film WarGames, and named after that film. War dialing consists of dialing every phone number in a specific sequence in search of modems.  Nowadays the term is primarily used by people that travel around seeking internet or cell coverage by mapping the RF coverage of these networks.  The Mesh community has adopted this term to also refer to the act of mapping the mesh network.
 
-- **Resilience**: Communication that works without relying on external infrastructure
-- **Privacy**: Messages stay within the community network
-- **Emergency Response**: Functional communication when traditional systems fail
-- **Community**: Building local capacity and knowledge sharing
-- **Freedom**: Open-source hardware and software accessible to all
-
-## How It Works
-
-Participants deploy small LoRa radio "nodes" (repeaters) throughout the coverage area. These nodes automatically form a mesh network, allowing text messages, location sharing, and data collection without needing cell towers or internet connectivity.
-
-## Getting Started
-
-### For Users
-
-1. Purchase a compatible LoRa device (RAK3272S or RAK4631)
-2. Flash the MeshCore firmware using our [Firmware Flasher](https://flasher.meshcore.co.uk/)
-3. Configure your device and join the network
-4. See our [Getting Started Guide](post.html?post=2026-02-10-getting-started)
-
-### For Hardware Contributors
-
-If you have a suitable location for a repeater node:
-
-1. Contact us via [Discord](https://discord.com/channels/1280671076644425749/1280693593002082436)
-2. Discuss your location and local coverage impact
-3. Participate in deployment and testing
-4. Help expand our network reach
-
-### For Developers
-
-Interested in contributing code or documentation?
-
-- [GitHub Repository](https://github.com/DavidJayMartin/BexleyMesh)
-- [MeshCore Project](https://meshcore.co.uk/)
-- [Central Ohio Mesh Network](https://meshcolumb.us/)
-
-## Roadmap
-
-- **Phase 1 (Now)**: Establish core infrastructure with 3-5 repeater nodes
-- **Phase 2 (Q1 2026)**: Expand coverage to entire Bexley area
-- **Phase 3 (Q2 2026)**: Integrate with Central Ohio Mesh network
-- **Phase 4 (Future)**: Mobile applications and advanced features
-
-## Stay Connected
-
-- **Discord**: [Join our community](https://discord.com/channels/1280671076644425749/1280693593002082436)
-- **GitHub**: [Watch project updates](https://github.com/DavidJayMartin/BexleyMesh)
-- **This Site**: Check back for regular updates and announcements
-
-We're excited to build this network together. Whether you're a radio enthusiast, an emergency preparedness advocate, or just curious about mesh technology, there's a place for you in this project.
-
-Welcome to BexleyMesh!
+# How can you help map the network?
+1. Download the Wardriving App.
+ - [<i class="fa-brands fa-android"></i> Android](https://play.google.com/store/apps/details?id=net.meshmapper.app)
+ - [<i class="fa-brands fa-app-store-ios"></i> IOS](https://apps.apple.com/us/app/meshmapper/id6758073991)
+2. Connect the app to your Meshcore device.
+3. Start driving, biking, walking, unicycling the community.
