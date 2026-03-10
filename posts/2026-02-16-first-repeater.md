@@ -34,6 +34,8 @@ I chose this board because of it's low power consumption and
  - [Generic 6"x4"x3" Weatherproof Enclosure](https://www.amazon.com/dp/B093WS6C66)
  - [1" x 10' Schedule 40 Plastic Conduit](https://www.lowes.com/pd/CANTEX-Common-1-in-Actual-1-In-Non-Metallic-Pvc-10-ft-Conduit/50434246)
 
+![](posts\photos\repeater-electronics.jpg)
+
 # Coverage Results
 When I first built the repeater, I stuck it on the 10' conduit in my yard.  I wanted to ensure everything was working before I went to the effort of mounting it to the roof.  Even at only 10' off the ground, I was quite impressed with the results.  After about a week of use without any issue, I took the leap and mounted it to the roof.  The new position is about 28' off the ground and the extra height increased the coverage area by about 50%.
 
@@ -42,18 +44,6 @@ When I first built the repeater, I stuck it on the 10' conduit in my yard.  I wa
 
 At the LoRa frequencies, the devices rely on line of sight to transmit their messages.  You get some benefit from the RF bouncing around the environment to extend the range past true line of sight, but every bounce takes energy out of the signal.  YOu really extend the range, you need to get the antenna as high as you can.  Preferrably above the tree line.  Here is the final installation.
 
-![](posts\photos\antenna-mast-v1-1.jpg)
-![](posts\photos\antenna-mast-v1-2.jpg)
-![](posts\photos\antenna-mast-v1-3.jpg)
-![](posts\photos\antenna-mast-v1-1.jpg)
-![](posts\photos\antenna-mast-v1-2.jpg)
-![](posts\photos\antenna-mast-v1-3.jpg)
-![](posts\photos\antenna-mast-v1-1.jpg)
-![](posts\photos\antenna-mast-v1-2.jpg)
-![](posts\photos\antenna-mast-v1-3.jpg)
-![](posts\photos\antenna-mast-v1-1.jpg)
-![](posts\photos\antenna-mast-v1-2.jpg)
-![](posts\photos\antenna-mast-v1-3.jpg)
 ![](posts\photos\antenna-mast-v1-1.jpg)
 ![](posts\photos\antenna-mast-v1-2.jpg)
 ![](posts\photos\antenna-mast-v1-3.jpg)

@@ -364,10 +364,19 @@ a:focus-visible {
     line-height: 1.4;
 }
 
-.lightbox-close {
+/* Toolbar: holds fullscreen + close buttons */
+.lightbox-toolbar {
     position: absolute;
     top: -2.5rem;
     right: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.lightbox-close,
+.lightbox-fullscreen {
     color: #fff;
     font-size: 1.5rem;
     background: none;
@@ -379,8 +388,37 @@ a:focus-visible {
     transition: opacity 150ms;
 }
 
-.lightbox-close:hover {
+.lightbox-fullscreen {
+    font-size: 1.2rem;
+}
+
+.lightbox-close:hover,
+.lightbox-fullscreen:hover {
     opacity: 1;
+}
+
+/* Zoom cursors */
+.lightbox-content img {
+    cursor: zoom-in;
+}
+
+.lightbox-content img.zoomed {
+    cursor: zoom-out;
+}
+
+/* Zoomed state */
+.lightbox-img-wrapper.zoomed {
+    overflow: auto;
+    max-height: 80vh;
+    max-width: 80vw;
+}
+
+.lightbox-content img.zoomed {
+    max-width: none;
+    max-height: none;
+    width: auto;
+    height: auto;
+    border-radius: 0.5rem;
 }
 
 .lightbox-nav {

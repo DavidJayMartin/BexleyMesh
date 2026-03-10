@@ -362,10 +362,13 @@ function renderLightbox() {
     overlay.className = 'lightbox-overlay';
     overlay.innerHTML = `
         <div class="lightbox-content">
-            <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+            <div class="lightbox-toolbar">
+                <button class="lightbox-fullscreen" onclick="toggleLightboxFullscreen()" aria-label="Toggle fullscreen"><i class="fa-solid fa-expand"></i></button>
+                <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+            </div>
             <button class="lightbox-nav lightbox-prev" id="lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="lightbox-img-wrapper">
-                <img id="lightbox-img" src="" alt="" />
+                <img id="lightbox-img" src="" alt="" onclick="toggleLightboxZoom()" />
                 <div id="lightbox-caption" class="lightbox-caption"></div>
             </div>
             <button class="lightbox-nav lightbox-next" id="lightbox-next" onclick="lightboxNav(1)" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
@@ -405,12 +408,17 @@ function openLightbox(images, captions, index) {
 }
 
 function closeLightbox() {
+    _resetLightboxZoom();
+    if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+    }
     const overlay = document.getElementById('lightbox-overlay');
     if (overlay) overlay.classList.remove('active');
     document.removeEventListener('keydown', _lightboxKeyHandler);
 }
 
 function lightboxNav(dir) {
+    _resetLightboxZoom();
     _lightboxIndex = (_lightboxIndex + dir + _lightboxImages.length) % _lightboxImages.length;
     document.getElementById('lightbox-img').src = _lightboxImages[_lightboxIndex];
     document.getElementById('lightbox-img').alt = _lightboxCaptions[_lightboxIndex] || '';
@@ -423,6 +431,44 @@ function _lightboxKeyHandler(e) {
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') lightboxNav(-1);
     if (e.key === 'ArrowRight') lightboxNav(1);
+    if (e.key === 'f' || e.key === 'F') toggleLightboxFullscreen();
+}
+
+let _lightboxZoomed = false;
+
+function toggleLightboxZoom() {
+    _lightboxZoomed = !_lightboxZoomed;
+    const wrapper = document.querySelector('.lightbox-img-wrapper');
+    const img = document.getElementById('lightbox-img');
+    if (_lightboxZoomed) {
+        wrapper.classList.add('zoomed');
+        img.classList.add('zoomed');
+    } else {
+        wrapper.classList.remove('zoomed');
+        img.classList.remove('zoomed');
+    }
+}
+
+function _resetLightboxZoom() {
+    _lightboxZoomed = false;
+    const wrapper = document.querySelector('.lightbox-img-wrapper');
+    const img = document.getElementById('lightbox-img');
+    if (wrapper) wrapper.classList.remove('zoomed');
+    if (img) img.classList.remove('zoomed');
+}
+
+function toggleLightboxFullscreen() {
+    const overlay = document.getElementById('lightbox-overlay');
+    const btn = overlay.querySelector('.lightbox-fullscreen i');
+    if (!document.fullscreenElement) {
+        overlay.requestFullscreen().then(() => {
+            btn.className = 'fa-solid fa-compress';
+        }).catch(() => {});
+    } else {
+        document.exitFullscreen().then(() => {
+            btn.className = 'fa-solid fa-expand';
+        }).catch(() => {});
+    }
 }
 
 // Auto-initialize components when DOM is ready
