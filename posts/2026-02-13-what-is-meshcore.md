@@ -6,66 +6,24 @@ tags: Project Update
 excerpt: I went looking for a way for my kids to communicate with their friends and found a new hobby.
 ---
 
-# Getting Started with MeshCore Agents
+# Why did I start this project?
+I have young kids.  Young enough that we don't want them having cell phones yet, but we do want them to have some independence of movement and communication with their friends.  We are fortunate enough to live in Bexley, where everything is walkable or bikeable and we feel comfortable with them moving around town solo.  This has been fine with walking to and from school or riding their bike to the library, but we haven't made the leap yet of letting them just show up at a friends house without the parents needing to be in the loop to ask if it's alright.  
 
-Welcome to the BexleyMesh network! This guide will walk you through setting up your first MeshCore agent device and connecting it to our community MQTT broker.
+I wanted to find a solution to the commuication problem that would allow the kids to handle the asking permission on their own.  Ideally, the solution would also have some ability to monitor the kids' locations as they move around town.  My eldest has used a Garmin Bounce for a couple years, and that has been great for use to communicate with her while she's out.  Unfortunately, the Bounce requires a celluar plan and it doesn't enable her to communicate with friends.  I wanted something that wouldn't require their friends to also purchase an expensive piece of tech or pay for a subscription.  
 
-## What You'll Need
+## Project Requirments 
+  1. The tool must be simple enough for an elementary school kid to use and a non-tech oriented parent to setup.
+  2. The cost of getting started must be as low as possible.
+  3. It shouldn't require much administrative effort to maintain the tool.
 
-- A compatible LoRa radio device (RAK3272S, RAK4631, or similar)
-- A microSD card (optional, for configuration storage)
-- USB-C cable for programming
-- About 30 minutes of your time
+# Discovering Meshcore
+While looking for a solution to my problem, I came across mesh networks.  This technology uses a portion of the RF spectrum that the FCC does not limit usage of through licensing or fees.  There are a number of different protocols that have taken advantage of this spectrum and I landed on Meshcore for a few reasons.
+  - There was an active community in Central Ohio that I could learn from.
+  - Other protocols had issues as they scaled up with more users.
+  - The community developing the tools and apps around [Meshcore<i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>](https://meshcore.co.uk/?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink) was very active and the technology was improving quickly.
 
-## Step 1: Flash the Firmware
+# Setting up my first device.
+Getting started with Meshcore was remarkably easy.  After a little reading on [Meshcore's Project Website<i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>](https://meshcore.co.uk/?utm_source=BexleyMesh&utm_medium=web&utm_campaign=crosslink) I felt comfortable enough to jump on Amazon and purchase a [couple of the cheapest devices I could find<i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-70"></i>](https://www.amazon.com/ESP32-V3-Module-3000mAh-Battery/dp/B0F4XCXPPN/ref=sxbs_pa_sp_search_thematic_btf_sspa) to experiement with.  Do not buy the pair I linked here.  It turned out that the cases that came with this set do not fit the batteries.  If you are thinking about picking up your own devices, please pop over to our [Getting Started](page.html?page=getting-started) page for some recommendations.
 
-1. Go to the [MeshCore Firmware Flasher](https://flasher.meshcore.co.uk/)
-2. Select your device model from the dropdown
-3. Choose the latest stable firmware version
-4. Connect your device via USB
-5. Click "Flash" and wait for completion
+After flashing my new devices and installing the companion app on my phone, I was pretty blown away at the simplicity of their use and the range that these little devices had.  With my experimentation being a success, I decided to take the next steps and put a repeater up to expand the range and reliability of the network coverage.
 
-## Step 2: Configure Your Device
-
-Once flashing is complete, you'll need to configure the device:
-
-1. Connect to the serial console (9600 baud)
-2. Use the command `config` to enter configuration mode
-3. Set your node name: `config set name YourNodeName`
-4. Set your position (optional): `config set lat 40.1234 lon -82.9876`
-5. Save configuration: `config save`
-
-## Step 3: Connect to MQTT (Hybrid Mode)
-
-To enable hybrid connectivity with our MQTT broker:
-
-1. In configuration mode, set: `config set mqtt enabled`
-2. Set broker address: `config set mqtt.host mqtt.meshcommunity.net`
-3. Set MQTT port: `config set mqtt.port 1883`
-4. Save and reboot: `config save; reboot`
-
-## Verification
-
-You should see your node appear in the network within 2-3 minutes. You can verify:
-
-- Check the live repeater status on the homepage
-- Monitor MQTT topics: `meshcore/nodes/+/status`
-- View coverage map at [Central Ohio Mesh](https://meshcolumb.us)
-
-## Troubleshooting
-
-**Device not appearing**: Check that firmware flashing completed without errors. Try a factory reset with `reset factory`.
-
-**No MQTT connection**: Verify network connectivity and broker address. Check serial logs with `log level debug`.
-
-**Poor reception**: Try repositioning your antenna vertically or moving to a higher location.
-
-## Getting Help
-
-If you run into issues:
-
-1. Check the [MeshCore FAQ](https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md)
-2. Ask in the [Discord #hardware channel](https://discord.com/channels/1280671076644425749/1280693593002082436)
-3. File an issue on [GitHub](https://github.com/meshcore-dev/MeshCore/issues)
-
-Happy meshing!

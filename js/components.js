@@ -349,6 +349,82 @@ function renderFooter(containerId) {
     `;
 }
 
+/**
+ * Render the lightbox overlay (used for image viewing).
+ * Call once on page load — the lightbox is shared across all images.
+ */
+function renderLightbox() {
+    // Avoid duplicates
+    if (document.getElementById('lightbox-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'lightbox-overlay';
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = `
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="lightbox-img-wrapper">
+                <img id="lightbox-img" src="" alt="" />
+                <div id="lightbox-caption" class="lightbox-caption"></div>
+            </div>
+            <button class="lightbox-nav lightbox-next" id="lightbox-next" onclick="lightboxNav(1)" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    `;
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeLightbox();
+    });
+    document.body.appendChild(overlay);
+}
+
+// --- Lightbox API (global functions used by onclick handlers) ---
+
+let _lightboxImages = [];
+let _lightboxCaptions = [];
+let _lightboxIndex = 0;
+
+function openLightbox(images, captions, index) {
+    renderLightbox();
+    _lightboxImages = images;
+    _lightboxCaptions = captions || [];
+    _lightboxIndex = index;
+    const overlay = document.getElementById('lightbox-overlay');
+    const img = document.getElementById('lightbox-img');
+    const caption = document.getElementById('lightbox-caption');
+    img.src = images[index];
+    img.alt = _lightboxCaptions[index] || '';
+    caption.textContent = _lightboxCaptions[index] || '';
+    caption.style.display = _lightboxCaptions[index] ? '' : 'none';
+    overlay.classList.add('active');
+
+    // Show/hide nav arrows
+    document.getElementById('lightbox-prev').style.display = images.length > 1 ? '' : 'none';
+    document.getElementById('lightbox-next').style.display = images.length > 1 ? '' : 'none';
+
+    document.addEventListener('keydown', _lightboxKeyHandler);
+}
+
+function closeLightbox() {
+    const overlay = document.getElementById('lightbox-overlay');
+    if (overlay) overlay.classList.remove('active');
+    document.removeEventListener('keydown', _lightboxKeyHandler);
+}
+
+function lightboxNav(dir) {
+    _lightboxIndex = (_lightboxIndex + dir + _lightboxImages.length) % _lightboxImages.length;
+    document.getElementById('lightbox-img').src = _lightboxImages[_lightboxIndex];
+    document.getElementById('lightbox-img').alt = _lightboxCaptions[_lightboxIndex] || '';
+    const caption = document.getElementById('lightbox-caption');
+    caption.textContent = _lightboxCaptions[_lightboxIndex] || '';
+    caption.style.display = _lightboxCaptions[_lightboxIndex] ? '' : 'none';
+}
+
+function _lightboxKeyHandler(e) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+}
+
 // Auto-initialize components when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     renderNavigation('nav-component');

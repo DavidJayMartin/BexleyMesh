@@ -1,9 +1,9 @@
 [
     {
         "filename": "2026-02-13-what-is-meshcore.md",
-        "title": "What is MeshCore?",
+        "title": "What the heck is Meshcore and why did I start the project?",
         "date": "2026-02-13",
-        "author": "davidjay",
+        "author": "DavidJay",
         "tags": ["Project Updates"],
         "excerpt": "I went looking for a way for my kids to communicate with their friends and found a new hobby."
     },
@@ -11,7 +11,7 @@
         "filename": "2026-02-16-first-repeater.md",
         "title": "Built my first repeater!",
         "date": "2026-02-16",
-        "author": "davidjay",
+        "author": "DavidJay",
         "tags": ["Project Updates", "Hardware"],
         "excerpt": "Now that I have some companion devices, I need a repeater to extend their range."
     },
@@ -19,7 +19,7 @@
         "filename": "2026-02-21-meshmapper.md",
         "title": "MeshMapper now available.",
         "date": "2026-02-21",
-        "author": "davidjay",
+        "author": "DavidJay",
         "tags": ["Announcements"],
         "excerpt": "I've activated the CMH region in MeshMapper to allow us to map Meshcore network coverage in Central Ohio."
     }

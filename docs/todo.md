@@ -1,10 +1,4 @@
 [ ] Determine where to link to for the View Details link of the Network Status panel
-[ ] Write Getting Started Page
-[ ] Write About Us Page
-  - Goals:
-    1. Create a network that provides reliable outdoor and indoors for every corner of Bexley
-    2. Establish repeater locations outside of Bexley that allow us to connect to the broader Central Ohio mesh network
-    3. Provide learning opportunities and materials for makers and students interested in STEM    
 [ ] Write Article - Why I started exploring Meshcore
   - Needed a way for my kids to communicate with friends without cell phones
   - Came across mesh networks, why Meshcore and not Meshtastic

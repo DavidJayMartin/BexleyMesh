@@ -67,6 +67,13 @@ class MarkdownParser {
         html = html.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
         html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
 
+        // Images (must be before links to avoid ![alt](url) being caught by link regex)
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+            // Normalize backslashes to forward slashes in image paths
+            src = src.replace(/\\/g, '/');
+            return `<img src="${src}" alt="${alt}" class="prose-img" />`;
+        });
+
         // Links
         html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
@@ -96,6 +103,38 @@ class MarkdownParser {
 
         // Horizontal rules
         html = html.replace(/^---$/gm, '<hr />');
+
+        // Group consecutive images into albums
+        html = html.replace(/(<p>(?:<img[^>]+class="prose-img"[^>]*\/>\s*)+<\/p>)/g, (match) => {
+            const imgs = [...match.matchAll(/<img[^>]+src="([^"]+)"[^>]+alt="([^"]*)"[^>]*\/>/g)];
+            if (imgs.length === 1) {
+                // Single image — clickable with caption
+                const src = imgs[0][1];
+                const alt = imgs[0][2];
+                const caption = alt ? `<figcaption class="prose-img-caption">${alt}</figcaption>` : '';
+                return `<figure class="prose-img-single"><img src="${src}" alt="${alt}" class="prose-img-processed" onclick="openLightbox([&quot;${src}&quot;], [&quot;${alt.replace(/"/g, '&amp;quot;')}&quot;], 0)" />${caption}</figure>`;
+            }
+            // Multiple consecutive images — render as album grid
+            const srcs = imgs.map(m => m[1]);
+            const alts = imgs.map(m => m[2]);
+            const srcsAttr = JSON.stringify(srcs).replace(/"/g, '&quot;');
+            const altsAttr = JSON.stringify(alts).replace(/"/g, '&quot;');
+            const grid = imgs.map((m, idx) => {
+                const caption = m[2] ? `<figcaption class="prose-img-caption">${m[2]}</figcaption>` : '';
+                return `<figure class="prose-img-album-figure"><img src="${m[1]}" alt="${m[2]}" class="prose-img-album-item" onclick="openLightbox(${srcsAttr}, ${altsAttr}, ${idx})" />${caption}</figure>`;
+            }).join('\n');
+            return `<div class="prose-img-album">${grid}</div>`;
+        });
+
+        // Handle any remaining standalone images not already wrapped
+        html = html.replace(/<img([^>]+)class="prose-img"([^>]*)\/>/g, (match, before, after) => {
+            const srcMatch = match.match(/src="([^"]+)"/);
+            const altMatch = match.match(/alt="([^"]*)"/);
+            const src = srcMatch ? srcMatch[1] : '';
+            const alt = altMatch ? altMatch[1] : '';
+            const caption = alt ? `<figcaption class="prose-img-caption">${alt}</figcaption>` : '';
+            return `<figure class="prose-img-single"><img${before}class="prose-img-processed"${after} onclick="openLightbox([&quot;${src}&quot;], [&quot;${alt.replace(/"/g, '&amp;quot;')}&quot;], 0)" />${caption}</figure>`;
+        });
 
         return html;
     }
