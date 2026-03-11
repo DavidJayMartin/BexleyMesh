@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T16:02:26.185696+00:00",
+  "lastUpdated": "2026-03-11T17:10:24.476621+00:00",
   "totalNodes": 3,
   "onlineNodes": 2,
   "offlineNodes": 1,
@@ -20,13 +20,13 @@
         "longitude": -82.925051,
         "address": ""
       },
-      "lastSeen": "2026-03-11T16:00:46.248Z",
+      "lastSeen": "2026-03-11T17:00:46.298Z",
       "signalStrength": -46,
       "signalPercentage": 61.7,
       "averageSNR": 11.4,
       "averageRSSI": -49.6,
       "averageRSSIPercentage": 58.7,
-      "activityPacketCount": 1403,
+      "activityPacketCount": 1404,
       "batteryLevel": null,
       "uptime": null,
       "hardware": "Unknown",
