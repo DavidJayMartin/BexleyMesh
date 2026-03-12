@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-03-12T04:16:13.814660+00:00",
+  "lastUpdated": "2026-03-12T05:33:54.345090+00:00",
   "totalNodes": 3,
-  "onlineNodes": 2,
-  "offlineNodes": 1,
-  "healthPercentage": 66.7,
-  "networkHealth": "fair",
+  "onlineNodes": 1,
+  "offlineNodes": 2,
+  "healthPercentage": 33.3,
+  "networkHealth": "poor",
   "averageSignal": -57.3,
   "averageSNR": 9.6,
   "companionCount": 10,
@@ -20,9 +20,9 @@
         "longitude": -82.925051,
         "address": ""
       },
-      "lastSeen": "2026-03-12T04:00:46.883Z",
-      "signalStrength": -52,
-      "signalPercentage": 56.7,
+      "lastSeen": "2026-03-12T05:00:46.985Z",
+      "signalStrength": -51,
+      "signalPercentage": 57.5,
       "averageSNR": 11.4,
       "averageRSSI": -49.2,
       "averageRSSIPercentage": 59.0,
@@ -59,7 +59,7 @@
     {
       "id": "node-cc540240baf2",
       "name": "TJ00",
-      "status": "online",
+      "status": "offline",
       "publicKey": "CC540240BAF29FF141A5F70D87622C3716B6E810AF1097E80D4D2A442E1414E4",
       "location": {
         "latitude": 39.96003,
